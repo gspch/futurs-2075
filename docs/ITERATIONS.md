@@ -117,3 +117,37 @@ Mesure exploratoire (1 500 parties par configuration, bots non recalibrés) : C1
 contre 2,6 sur 14,6) ; 23 installations pour 23 veilles à 4 joueurs (contre 20 / 26).
 
 **Conclusion.** Confirmée : les trois sources de points s'équilibrent (vision 5,0 · héritage 6,1 · anticipation 6,9 à 4 joueurs). Le retour du dernier progresse sans atteindre le seuil. Mesure complète faite avec la v0.7, qui ajoute un seul changement.
+
+## v0.7 — Les moins avancés ouvrent la décennie
+
+**Hypothèse.** Avec une seule place par lecture, l'ordre du tour compte : jouer premier, c'est choisir son signal. Si le joueur qui a le moins de points d'anticipation
+ouvre chaque décennie (au lieu d'une simple rotation), on corrige à la fois le biais de position constaté à 5 joueurs et un peu de l'avance du meneur.
+
+**Changement.** `ordreRattrapage` : à chaque nouvelle décennie, le premier joueur est celui qui a le moins de points d'anticipation (à égalité, le plus proche à gauche de l'ancien premier joueur). Le tour continue dans le sens horaire.
+
+| | C1 | C2 | C3 | C4 (2 / 3 / 4 / 5 j.) | C5 | C6 | C8 | score moyen à 4 j. (vision / héritage / anticipation) |
+|--|----|----|----|----|----|----|----|----|
+| avant (v0.5, dernière mesure complète) | ✘ 1,33 | ✔ 1,5 | ✔ 95 % / ✘ 56 % | ✘ 29 / 14 / 6,2 / 3,4 % | ✔ 4,6 | ✔ 16 % | ✔ 3,1 | 5,1 / 2,6 / 6,8 |
+| après (v0.6 + v0.7) | ✔ 1,24 (parieur, 5 j.) | ✔ −0,5 | ✔ 96 % / ✘ 58 % | ✘ 29 / 14 / 7,4 / 5,1 % | ✔ 5,1 | ✔ 16 % | ✔ 3,1 | 5,1 / 4,9 / 6,2 |
+
+**Conclusion.** Confirmée pour l'équité de position (les cinq sièges gagnent entre 19,5 et 20,9 % des parties à 5 joueurs) et, avec la v0.6, pour C1 : **plus aucune stratégie simple ne dépasse 1,3 fois sa part.**
+Le retour du dernier continue de progresser (5,1 % à 5 joueurs contre 1,0 % en v0.1) sans atteindre 10 % à 4 et 5 joueurs : critère **non atteint** dans ces deux configurations.
+L'expert contre le glouton est à la limite du seuil sur 300 parties (58 %, intervalle [52 ; 63]) ; une mesure séparée sur 600 parties donne 65,5 % : la mesure finale sur 10 000 parties tranchera.
+
+## v1.0 — Gel des règles
+
+Aucun changement de règle par rapport à la v0.7. Les bots de référence sont recalibrés une dernière fois avec des bornes de recherche élargies, puis :
+mesure finale sur 10 000 parties par configuration et test adverse (`docs/RAPPORT_EQUILIBRAGE.md`).
+
+### Correspondance versions → commits
+
+Les tags `v0.1` à `v1.0` existent dans le dépôt de travail mais **n'ont pas pu être poussés** : la session de développement n'était autorisée à pousser que sa branche (voir `DECISIONS.md`, D12).
+Pour les recréer : `git tag -a <version> <commit>` avec la table ci-dessous. Les versions 0.4, 0.5 et 0.6 ont été développées d'un trait et partagent un commit ; leurs paramètres respectifs sont décrits plus haut.
+
+| Version | Commit | Paramètres caractéristiques |
+|---|---|---|
+| v0.1 | `88d639f` | 5 jetons, pas de 2, bascule en bout de piste |
+| v0.2 | `a0124ff` | 3 jetons, 1 place par lecture, rupture 3 pts |
+| v0.3 | `2ef1c93` | pas de 1, bascule à 4 cases |
+| v0.4 – v0.6 | voir `git log` (« Règles v0.4 à v0.6 ») | visions à cible ; veille payante ; héritage 2 pts |
+| v0.7, v1.0 | voir `git log` (« Règles v1.0 ») | ordre de rattrapage ; gel |

@@ -10,7 +10,7 @@ import { CONTENU as C, PARAMETRES as P } from '../contenu';
 import { effetTendance, effetSignal, effetRupture, effetVision, FLECHE } from '../recit/recit';
 import { motifCarte, pictoAxe, pictoType, logo, COULEURS_AXES, COULEURS_AXES_CLAIR, COULEUR_SIGNAL, COULEUR_RUPTURE, COULEUR_VISION, ENCRE, PAPIER, AMBRE } from '../recit/visuel';
 
-const esc = (s: string) => s.replace(/[&<>]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;' }[c] as string));
+const esc = (s: string) => s.replace(/[&<>]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;' }[c] as string)).replace(/ ([:;?!»])/g, '\u00a0$1').replace(/« /g, '«\u00a0');
 const racine = path.resolve(path.dirname(new URL(import.meta.url).pathname), '..');
 const POLICE = `"DejaVu Sans", "Liberation Sans", Arial, sans-serif`;
 const SERIF = `"DejaVu Serif", Georgia, serif`;
@@ -28,12 +28,12 @@ body { margin: 0; font-family: ${POLICE}; color: #000; }
 .c .cadre { width: 100%; height: 100%; border: 0.8mm solid var(--c); border-radius: 3mm; overflow: hidden; display: flex; flex-direction: column; background: #fff; }
 .c .bandeau { background: var(--c); color: #fff; padding: 1.2mm 1.8mm; font-size: 7.2pt; font-weight: 700; display: flex; align-items: center; gap: 1.2mm; }
 .c .bandeau .force { margin-left: auto; background: #fff; color: #000; border-radius: 50%; width: 5.2mm; height: 5.2mm; display: flex; align-items: center; justify-content: center; font-size: 9pt; font-weight: 800; }
-.c .motif { height: 15mm; background: var(--cc); border-bottom: 0.3mm solid var(--c); }
+.c .motif { height: 21mm; background: var(--cc); border-bottom: 0.3mm solid var(--c); }
 .c .motif svg { width: 100%; height: 100%; display: block; }
 .c .corps { padding: 1.6mm 2mm 1.4mm; display: flex; flex-direction: column; flex: 1; gap: 1mm; min-height: 0; }
-.c .titre { font-family: ${SERIF}; font-weight: 700; font-size: 10pt; line-height: 1.1; }
-.c .ambiance { font-size: 7pt; font-style: italic; color: #222; line-height: 1.2; }
-.c .effet { margin-top: auto; border-top: 0.3mm solid #000; padding-top: 1mm; font-size: 6.9pt; line-height: 1.22; }
+.c .titre { font-family: ${SERIF}; font-weight: 700; font-size: 11pt; line-height: 1.1; }
+.c .ambiance { font-size: 7.8pt; font-style: italic; color: #222; line-height: 1.2; }
+.c .effet { margin-top: auto; border-top: 0.3mm solid #000; padding-top: 1mm; font-size: 7.4pt; line-height: 1.22; }
 .c .effet b { font-weight: 800; }
 .c .bas { display: flex; justify-content: space-between; font-size: 5.6pt; color: #333; padding: 0 2mm 1mm; }
 .dos .cadre { border-width: 1.2mm; align-items: center; justify-content: center; gap: 3mm; background: var(--cc); }
@@ -155,7 +155,7 @@ function mdVersHtml(fichier: string, titre: string): string {
   let md = fs.readFileSync(fichier, 'utf8');
   // {{param:nom}} → valeur du paramètre ; {{schema:nom}} → schéma SVG généré ; images relatives → inlinées
   md = md.replace(/\{\{param:([\w.]+)\}\}/g, (_, k: string) => { let v: unknown = P; for (const part of k.split('.')) v = (v as Record<string, unknown>)[part]; return Array.isArray(v) ? v.join(' / ') : String(v); });
-  md = md.replace(/\{\{schema:(\w+)\}\}/g, (_, k: string) => SCHEMAS[k]?.() ?? `[schéma ${k} manquant]`);
+  md = md.replace(/\{\{schema:(\w+)\}\}/g, (_, k: string) => (SCHEMAS[k]?.() ?? `[schéma ${k} manquant]`).replace(/font-size="([\d.]+)"/g, (_m, n: string) => `font-size="${(Number(n) * 0.76).toFixed(2)}"`));
   let html = marked.parse(md, { async: false }) as string;
   html = html.replace(/<img src="([^"]+\.svg)"([^>]*)>/g, (tout, src: string) => { const f = path.resolve(path.dirname(fichier), src); return fs.existsSync(f) ? `<figure>${fs.readFileSync(f, 'utf8').replace(/<\?xml[^>]*>/, '')}</figure>` : tout; });
   return `<!doctype html><html lang="fr"><head><meta charset="utf-8"><title>${esc(titre)}</title><style>${CSS_DOC}</style></head><body>${html}</body></html>`;
@@ -168,26 +168,27 @@ const SCHEMAS: Record<string, () => string> = {
     let s = '';
     C.axes.forEach((ax, a) => {
       const y = 22 + a * 17;
-      s += b(8, y, 44, 14, `tendances ◀ ${ax.poles[0]}`, COULEURS_AXES[a], COULEURS_AXES_CLAIR[a], 5.5);
-      for (let i = 0; i <= 10; i++) s += `<rect x="${56 + i * 9}" y="${y + 2}" width="8" height="10" rx="1" fill="${i === 5 ? '#fff' : COULEURS_AXES_CLAIR[a]}" stroke="${COULEURS_AXES[a]}" stroke-width="${i === 1 || i === 9 ? 1.4 : 0.5}"/>`;
-      s += `<circle cx="${56 + 5 * 9 + 4}" cy="${y + 7}" r="3.4" fill="${COULEURS_AXES[a]}"/><text x="${56 + 49}" y="${y - 0.5}" font-size="5" text-anchor="middle" fill="${COULEURS_AXES[a]}" font-weight="700">${ax.nom}</text>`;
-      s += b(158, y, 44, 14, `tendances ${ax.poles[1]} ▶`, COULEURS_AXES[a], COULEURS_AXES_CLAIR[a], 5.5);
+      s += b(4, y, 50, 14, `tendances ◀ ${ax.poles[0]}`, COULEURS_AXES[a], COULEURS_AXES_CLAIR[a], 4.4);
+      for (let i = 0; i <= 10; i++) s += `<rect x="${58 + i * 8.6}" y="${y + 2}" width="7.6" height="10" rx="1" fill="${i === 5 ? '#fff' : COULEURS_AXES_CLAIR[a]}" stroke="${COULEURS_AXES[a]}" stroke-width="${i === 1 || i === 9 ? 1.4 : 0.5}"/>`;
+      s += `<circle cx="${58 + 5 * 8.6 + 3.8}" cy="${y + 7}" r="3.2" fill="${COULEURS_AXES[a]}"/><text x="${58 + 47}" y="${y - 0.3}" font-size="4.4" text-anchor="middle" fill="#000" font-weight="700">${ax.nom}</text>`;
+      s += b(156, y, 50, 14, `tendances ${ax.poles[1]} ▶`, COULEURS_AXES[a], COULEURS_AXES_CLAIR[a], 4.4);
     });
-    s += `<text x="105" y="12" font-size="7" text-anchor="middle" font-weight="700">Plateau du monde : 4 pions au centre (case 5)</text>`;
-    s += b(210, 22, 62, 22, '', COULEUR_SIGNAL, '#e7eaf1') + `<text x="241" y="30" font-size="6" text-anchor="middle" font-weight="700">Horizon — signaux proches</text><text x="241" y="38" font-size="5.5" text-anchor="middle">3 cartes face cachée</text>`;
-    s += b(210, 47, 62, 22, '', COULEUR_SIGNAL, '#e7eaf1') + `<text x="241" y="55" font-size="6" text-anchor="middle" font-weight="700">Horizon — signaux lointains</text><text x="241" y="63" font-size="5.5" text-anchor="middle">3 cartes face cachée</text>`;
-    s += b(210, 72, 62, 17, '', COULEUR_RUPTURE, '#f6dedb') + `<text x="241" y="79" font-size="6" text-anchor="middle" font-weight="700">Rupture latente</text><text x="241" y="86" font-size="5.5" text-anchor="middle">1 carte face visible</text>`;
-    s += b(8, 95, 30, 12, 'pioche Tendances', '#000', '#eee', 5) + b(42, 95, 30, 12, 'pioche Signaux', '#000', '#eee', 5) + b(76, 95, 30, 12, 'pioche Ruptures', '#000', '#eee', 5) + b(110, 95, 30, 12, 'défausse', '#000', '#fff', 5);
-    s += b(146, 93, 126, 16, '', COULEUR_VISION, '#f4ecd0') + `<text x="209" y="100" font-size="6" text-anchor="middle" font-weight="700">Devant chaque joueur : 1 vision secrète (choisie parmi 2), ${P.tailleMain} tendances en main,</text><text x="209" y="106" font-size="6" text-anchor="middle">${P.jetonsAttention} jetons d’attention, ses marqueurs de propriété</text>`;
+    s += `<text x="4" y="13" font-size="5.5" font-weight="700">Plateau du monde : 4 pions en case 5 ; bord épais = point de non-retour</text>`;
+    const bloc = (x: number, y: number, w: number, h: number, c: string, f: string, l1: string, l2: string) => b(x, y, w, h, '', c, f) + `<text x="${x + w / 2}" y="${y + h / 2 - 1}" font-size="4.6" text-anchor="middle" font-weight="700">${l1}</text><text x="${x + w / 2}" y="${y + h / 2 + 5}" font-size="4.2" text-anchor="middle">${l2}</text>`;
+    s += bloc(212, 22, 64, 20, COULEUR_SIGNAL, '#e7eaf1', 'Horizon — signaux proches', `${P.signauxParDecennie} cartes face cachée`);
+    s += bloc(212, 45, 64, 20, COULEUR_SIGNAL, '#e7eaf1', 'Horizon — signaux lointains', `${P.signauxParDecennie} cartes face cachée`);
+    s += bloc(212, 68, 64, 21, COULEUR_RUPTURE, '#f6dedb', 'Rupture latente', '1 carte face visible');
+    s += b(4, 95, 30, 12, 'pioche Tendances', '#000', '#eee', 3.6) + b(37, 95, 30, 12, 'pioche Signaux', '#000', '#eee', 3.6) + b(70, 95, 30, 12, 'pioche Ruptures', '#000', '#eee', 3.6) + b(103, 95, 24, 12, 'défausse', '#000', '#fff', 3.6);
+    s += bloc(132, 93, 144, 16, COULEUR_VISION, '#f4ecd0', 'Devant chaque joueur', `1 vision secrète (choisie parmi 2), ${P.tailleMain} tendances en main, ${P.jetonsAttention} jetons d’attention, ses marqueurs`);
     return `<div class="schema"><svg class="fig" viewBox="0 0 280 112" xmlns="http://www.w3.org/2000/svg" font-family="DejaVu Sans, sans-serif">${s}</svg></div>`;
   },
   /** Schéma du cycle de vie d'une tendance et d'un signal. */
   cycles(): string {
     const b = (x: number, y: number, w: number, t: string, u: string, c: string) => `<rect x="${x}" y="${y}" width="${w}" height="16" rx="2" fill="#fff" stroke="${c}" stroke-width="0.8"/><text x="${x + w / 2}" y="${y + 7}" font-size="6" text-anchor="middle" font-weight="700">${t}</text><text x="${x + w / 2}" y="${y + 13}" font-size="5" text-anchor="middle">${u}</text>`;
-    const f = (x: number, y: number, t = '') => `<path d="M${x} ${y} h10 m-3 -2.5 l3 2.5 l-3 2.5" fill="none" stroke="#000" stroke-width="0.8"/><text x="${x + 5}" y="${y - 2}" font-size="4.6" text-anchor="middle">${t}</text>`;
+    const f = (x: number, y: number, t = '') => `<path d="M${x} ${y} h10 m-3 -2.5 l3 2.5 l-3 2.5" fill="none" stroke="#000" stroke-width="0.8"/><text x="${x + 5}" y="${y - 4}" font-size="3.6" text-anchor="middle">${t}</text>`;
     let s = `<text x="2" y="12" font-size="6" font-weight="700">Tendance</text>` + b(34, 2, 52, '◌ Émergente', `infléchir : ${P.coutInflechir[0]} jeton`, ENCRE) + f(88, 10, 'bilan') + b(100, 2, 52, '◐ Installée', `infléchir : ${P.coutInflechir[1]} jetons`, ENCRE) + f(154, 10, 'bilan') + b(166, 2, 60, '■ Verrouillée', 'intouchable (sauf rupture)', ENCRE);
-    s += `<text x="2" y="34" font-size="6" font-weight="700">Signal</text>` + b(34, 24, 52, 'Lointain', `pari précoce : ${P.ptsSignalPrecoce} pts`, COULEUR_SIGNAL) + f(88, 32, 'bilan') + b(100, 24, 52, 'Proche', `pari tardif : ${P.ptsSignalTardif} pt`, COULEUR_SIGNAL) + f(154, 32, 'bilan') + b(166, 24, 60, 'Tendance ◐ force ' + P.forceSignal, 'ou extinction, selon le contexte', COULEUR_SIGNAL);
-    s += `<text x="2" y="56" font-size="6" font-weight="700">Rupture</text>` + b(34, 46, 52, 'Révélée', 'début de décennie', COULEUR_RUPTURE) + f(88, 54, 'dé > tension') + b(100, 46, 52, 'Encore latente', 'un dernier bilan', COULEUR_RUPTURE) + f(154, 54, 'dé > tension') + b(166, 46, 60, 'Dissipée', 'dé ≤ tension : elle éclate', COULEUR_RUPTURE);
+    s += `<text x="2" y="34" font-size="6" font-weight="700">Signal</text>` + b(34, 24, 52, 'Lointain', `pari précoce : ${P.ptsSignalPrecoce} pts`, COULEUR_SIGNAL) + f(88, 32, 'bilan') + b(100, 24, 52, 'Proche', `pari tardif : ${P.ptsSignalTardif} pt`, COULEUR_SIGNAL) + f(154, 32, 'bilan') + b(166, 24, 60, 'Tendance ■ force ' + P.forceSignal, 'ou extinction, selon le contexte', COULEUR_SIGNAL);
+    s += `<text x="2" y="56" font-size="6" font-weight="700">Rupture</text>` + b(34, 46, 52, 'Révélée', 'début de décennie', COULEUR_RUPTURE) + f(88, 54, 'tient') + b(100, 46, 52, 'Encore latente', 'un dernier bilan', COULEUR_RUPTURE) + f(154, 54, 'tient') + b(166, 46, 60, 'Dissipée', 'dé ≤ tension : elle éclate', COULEUR_RUPTURE);
     return `<div class="schema"><svg class="fig" viewBox="0 0 230 64" xmlns="http://www.w3.org/2000/svg" font-family="DejaVu Sans, sans-serif">${s}</svg></div>`;
   },
 };

@@ -8,6 +8,13 @@ import { strategies } from './criteres';
 import { Bassin } from './parallele';
 import { rechercheAdverse } from './adverse';
 import type { Parametres } from '../../moteur/src/types';
+import { creerMoteur } from '../../moteur/src/moteur';
+import { CONTENU } from '../../contenu';
+import { creerBot } from '../../bots/src/bots';
+import { jouerPartie } from './partie';
+import { wilson } from './stats';
+import { decrireEvenement, libelleDecennie } from '../../recit/recit';
+import { encoderPartie } from '../../web/src/partage';
 
 const REF_CI = 'simulations/reference-ci.json';
 
@@ -35,6 +42,27 @@ function mesuresCI(parties: number, graine: number): MesuresCI {
 }
 
 export const COMMANDES: Record<string, (o: Record<string, string>, reste: string[]) => Promise<void>> = {
+  /** Duel ou table fixe : `--bots expert,glouton --parties 1000 --graine 42` (sièges tournants). */
+  async duel(o) {
+    const bots = (o.bots ?? 'expert,glouton').split(',');
+    const bassin = new Bassin();
+    const a = await bassin.lot({ type: 'duel', nb: bots.length, parties: Number(o.parties ?? 1000), graine: Number(o.graine ?? 42), bots });
+    bassin.fermer();
+    for (const b of new Set(bots)) { const w = wilson(a[`strat.${b}.victoires`], a[`strat.${b}.parties`]); console.log(`${b} : ${(100 * w.p).toFixed(1)} % de victoires [${(100 * w.bas).toFixed(1)} ; ${(100 * w.haut).toFixed(1)}] sur ${a[`strat.${b}.parties`]} parties, score moyen ${(a[`strat.${b}.score`] / a[`strat.${b}.parties`]).toFixed(1)}`); }
+  },
+  /** Joue une partie et l'écrit : journal complet, scores, lien de rejeu. `--bots a,b,c,d --graine 7 [--sortie fichier.json]` */
+  async partie(o) {
+    const m = creerMoteur(CONTENU, PARAMETRES);
+    const noms = (o.bots ?? 'expert,glouton,chasseur,parieur').split(',');
+    const r = jouerPartie(m, noms.map((n) => creerBot(m, n)), Number(o.graine ?? 7), { garder: true });
+    const affiches = (o.noms ?? noms.join(',')).split(',');
+    const lien = encoderPartie({ version: PARAMETRES.version, graine: r.graine, sieges: noms.map((n) => (n === 'expert' ? 'D' : n === 'aleatoire' ? 'F' : 'M')) as never, coups: r.coups! });
+    if (o.sortie) fs.writeFileSync(o.sortie, JSON.stringify({ graine: r.graine, bots: noms, noms: affiches, coups: r.coups, journal: r.journal, scores: r.scores, gagnants: r.gagnants, histoire: r.etatFinal!.histoire, visions: r.etatFinal!.joueurs.map((j) => j.vision), type: r.type, lien }, null, 1));
+    for (const ev of r.journal!) { const s = decrireEvenement(CONTENU, ev, affiches); if (s) console.log(s); }
+    console.log('Scores : ' + r.scores.map((s, j) => `${affiches[j]} ${s.total} (vision ${s.vision}, héritage ${s.heritage}, anticipation ${s.anticipation})`).join(' ; '));
+    console.log('Lien de rejeu : #' + lien);
+    void libelleDecennie;
+  },
   /** Test adverse : recherche évolutionnaire d'une stratégie dominante (au moins 200 variantes). */
   async adverse(o) {
     const bassin = new Bassin();

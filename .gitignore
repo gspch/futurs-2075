@@ -4,3 +4,4 @@ web/dist/
 simulations/brut/
 *.log
 .DS_Store
+web/public/pdf/

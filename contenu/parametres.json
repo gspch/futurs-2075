@@ -1,5 +1,5 @@
 {
-  "version": "0.6",
+  "version": "1.0",
   "decennies": 5,
   "actionsParDecennie": {
     "2": 4,
@@ -40,5 +40,6 @@
     3,
     1,
     0
-  ]
+  ],
+  "ordreRattrapage": true
 }

@@ -72,7 +72,7 @@ Posez un jeton d'attention sur un signal de l'Horizon où vous n'avez pas déjà
 Posez un jeton d'attention sur une rupture latente (un seul par joueur et par rupture). Si elle éclate, vous marquez **{{param:ptsRupture}} points**. Le jeton vous revient quand la rupture éclate ou se dissipe.
 
 ### Infléchir une tendance
-Défaussez une tendance **d'un autre joueur ou née d'un signal**, tant qu'elle n'est pas verrouillée. Coût en jetons d'attention, mis de côté jusqu'au bilan : **{{param:coutInflechir}}** selon qu'elle est émergente ou installée.
+Défaussez une tendance **d'un autre joueur**, tant qu'elle n'est pas verrouillée. Coût en jetons d'attention, mis de côté jusqu'au bilan : **{{param:coutInflechir}}** selon qu'elle est émergente ou installée.
 
 ### Prospecter
 Piochez {{param:piocheProspecter}} cartes Tendance (impossible si cela vous ferait dépasser {{param:mainMax}} cartes). Si la pioche est vide, mélangez la défausse.
@@ -87,7 +87,7 @@ Effectuez ces cinq étapes **dans l'ordre**.
 
 **2. Signaux proches.** Retournez chaque signal proche. Sa carte indique un axe de **contexte** :
 - si le contexte penche vers son pôle haut, c'est la lecture **▲** qui se réalise ; vers son pôle bas, la lecture **▼** ;
-- si la lecture réalisée décrit une tendance, le signal **s'amplifie** : laissez la carte en jeu du côté indiqué, redressée, sans propriétaire. C'est désormais une tendance *installée* de force {{param:forceSignal}} ;
+- si la lecture réalisée décrit une tendance, le signal **s'amplifie** : laissez la carte en jeu du côté indiqué, sans propriétaire, avec un jeton ■. C'est désormais une tendance **verrouillée** de force {{param:forceSignal}} ;
 - sinon (contexte au centre, lecture absente, carte « Bruit », voie fermée), le signal **s'éteint** : défaussez-le.
 - Le joueur qui avait parié sur la lecture réalisée d'un signal **amplifié** marque **{{param:ptsSignalPrecoce}} points** si son pari était précoce, **{{param:ptsSignalTardif}}** sinon. Tous les jetons reviennent à leurs propriétaires.
 
@@ -133,7 +133,7 @@ Les visions *réformistes* visent près du centre (cases 3 ou 7), les *radicales
 - **Ordre des effets.** Le bilan suit toujours l'ordre 1 à 5. Un signal est donc lu *après* le mouvement de la décennie, une bascule vérifiée *après* les ruptures.
 - **Information.** Sont secrets : votre main, votre vision, les signaux que vous avez regardés. Sont publics : tout le reste, y compris qui a parié sur quelle lecture et combien de cartes chacun a en main. Vous pouvez dire ce que vous voulez, vrai ou faux, mais pas montrer une carte.
 - **Signal déjà parié des deux côtés.** On peut encore le veiller pour le regarder, mais il faudra retirer son jeton.
-- **Tendance née d'un signal.** Elle n'a pas de propriétaire et ne rapporte d'héritage à personne. Elle arrive installée : elle sera verrouillée au bilan suivant.
+- **Tendance née d'un signal.** Elle n'a pas de propriétaire, ne rapporte d'héritage à personne, et arrive verrouillée : seule une rupture peut la balayer.
 - **Pioche Tendance épuisée et défausse vide.** On ne pioche pas.
 - **À 2 joueurs**, aucune règle ne change : le jeu devient un duel d'influence, plus tactique.
 

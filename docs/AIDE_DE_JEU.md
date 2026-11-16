@@ -17,13 +17,13 @@
 | **Installer** | Poser une tendance de votre main, couchée (émergente), avec votre marqueur. Force 2 : prérequis à respecter. Jamais vers une voie fermée. | 1 carte |
 | **Veiller** | Poser un jeton sur un signal, le regarder en secret, puis l'orienter ▲ ou ▼ (pari ; une place par lecture) **ou** le retirer. | 1 jeton (jusqu'à la résolution du signal, ou jusqu'au bilan s'il est retiré) |
 | **Se préparer** | Poser un jeton sur une rupture latente. {{param:ptsRupture}} points si elle éclate. | 1 jeton (jusqu'à l'éclatement ou la dissipation) |
-| **Infléchir** | Défausser une tendance non verrouillée d'un autre joueur ou née d'un signal. | {{param:coutInflechir}} jeton(s) : émergente / installée (rendus au bilan) |
+| **Infléchir** | Défausser une tendance non verrouillée d'un autre joueur. | {{param:coutInflechir}} jeton(s) : émergente / installée (rendus au bilan) |
 | **Prospecter** | Piocher {{param:piocheProspecter}} tendances (main de {{param:mainMax}} cartes au plus). | — |
 
 ## Le bilan, étape par étape
 
 1. **Mouvement.** Chaque pion avance d'**une** case vers le côté dont les tendances pèsent le plus lourd. Égalité : immobile.
-2. **Signaux proches.** Contexte penché vers le haut : lecture ▲ ; vers le bas : lecture ▼. Lecture avec tendance → le signal **s'amplifie** (tendance installée, force {{param:forceSignal}}, sans propriétaire). Sinon il **s'éteint**. Pari juste sur un signal amplifié : **{{param:ptsSignalPrecoce}}** points s'il était précoce, **{{param:ptsSignalTardif}}** sinon.
+2. **Signaux proches.** Contexte penché vers le haut : lecture ▲ ; vers le bas : lecture ▼. Lecture avec tendance → le signal **s'amplifie** (tendance verrouillée, force {{param:forceSignal}}, sans propriétaire). Sinon il **s'éteint**. Pari juste sur un signal amplifié : **{{param:ptsSignalPrecoce}}** points s'il était précoce, **{{param:ptsSignalTardif}}** sinon.
 3. **Ruptures.** Tension = cases au-delà du centre vers le terrain. Dé ≤ tension : elle **éclate** ({{param:ptsRupture}} points par joueur préparé, puis effets). Deuxième bilan sans éclater : elle se dissipe.
 4. **Bascules.** Pion à {{param:seuilBascule}} cases ou plus du centre : la voie opposée est **fermée pour toujours**.
 5. **Ancrage.** Émergente (couchée) → installée (redressée) → verrouillée (■). Signaux lointains → proches. Les jetons mis de côté reviennent.

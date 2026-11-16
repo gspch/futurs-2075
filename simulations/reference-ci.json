@@ -1,10 +1,10 @@
 {
- "version": "0.1",
+ "version": "1.0",
  "parties": 50,
  "graine": 7,
- "ratioMax": 1.5951972555746143,
- "aleatoire": 0.03696857670979667,
- "premier": -0.02333333333333333,
- "typeMax": 0.305,
- "decisions": 72.075
+ "ratioMax": 1.4794138171667828,
+ "aleatoire": 0.3820086260012323,
+ "premier": 0.008333333333333345,
+ "typeMax": 0.165,
+ "decisions": 72.45
 }

@@ -10,8 +10,8 @@ import { wilson } from './stats';
 export interface Variante { id: number; origine: string; poids: Partial<Poids>; ratio: number; bas: number; haut: number; parties: number; parNb: number[] }
 
 const BORNES: Record<string, [number, number]> = {
-  vision: [0.4, 1.6], heritage: [0, 2.5], anticipation: [0.4, 1.8], signal: [0, 2.5], rupture: [0, 3], veille: [0, 2.5],
-  main: [0, 0.6], attention: [0, 0.6], amorti: [0.3, 1], blocage: [0, 1], focus: [0, 3],
+  vision: [0.3, 2], heritage: [0, 3], anticipation: [0.3, 2], signal: [0, 5], rupture: [0, 6], veille: [0, 5],
+  main: [0, 1.2], attention: [0, 1], amorti: [0.3, 1], blocage: [0, 1.2], focus: [0, 3],
 };
 
 function aleatoire(r: { rng: number }): Partial<Poids> {
