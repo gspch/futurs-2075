@@ -1,0 +1,24 @@
+name: Intégration continue
+on:
+  push:
+  pull_request:
+permissions:
+  contents: read
+jobs:
+  verifier:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - name: Vérification des types
+        run: npm run typecheck
+      - name: Tests
+        run: npm test
+      - name: Simulation courte (garde-fou d'équilibre)
+        run: npm run sim:ci
+      - name: Construction du jeu web
+        run: npm run build
