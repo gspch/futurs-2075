@@ -19,7 +19,7 @@ export function cloner(e: Etat): Etat {
     ruptures: e.ruptures.map((r) => ({ carte: r.carte, age: r.age, prepares: r.prepares.slice() })),
     signauxResolus: e.signauxResolus.slice(), rupturesVues: e.rupturesVues.slice(),
     joueurs: e.joueurs.map((j) => ({ main: j.main.slice(), choixVisions: j.choixVisions.slice(), vision: j.vision, attention: j.attention, depense: j.depense, anticipation: j.anticipation, connus: j.connus.slice() })),
-    prochainUid: e.prochainUid, nbCoups: e.nbCoups,
+    prochainUid: e.prochainUid, nbCoups: e.nbCoups, veille: e.veille,
   };
 }
 
@@ -77,15 +77,14 @@ export function creerMoteur(contenu: Contenu, params: Parametres): Moteur {
   const placesParLecture = typeof P.placesParLecture === 'number' ? (P.placesParLecture as number) : 0;
   const seuilBascule = typeof P.seuilBascule === 'number' ? (P.seuilBascule as number) : centre;
 
-  const baremes = [P.baremePrincipal as number[] | undefined, P.baremeSecondaire as number[] | undefined];
-  /** Points de vision pour une distance d (éventuellement fractionnaire) au-delà du centre vers le pôle voulu. rang 0 = principal, 1 = secondaire. */
+  const baremes = [P.baremePrincipal, P.baremeSecondaire];
+  /** Points de vision pour un écart d (éventuellement fractionnaire) entre l'axe et la case visée. rang 0 = principal, 1 = secondaire. */
   function ptsVision(rang: number, d: number): number {
-    if (d <= 0) return 0;
     const b = baremes[rang];
-    if (!b) return (rang === 0 ? P.ptsVisionPrincipal : P.ptsVisionSecondaire) * d;
-    const i = Math.min(Math.floor(d), b.length - 1);
-    const suivant = b[Math.min(i + 1, b.length - 1)];
-    return b[i] + (suivant - b[i]) * (d - i);
+    if (d < 0) d = -d;
+    const i = Math.floor(d);
+    if (i >= b.length - 1) return i === b.length - 1 && d === i ? b[i] : i >= b.length ? 0 : b[i] * (1 - (d - i));
+    return b[i] + (b[i + 1] - b[i]) * (d - i);
   }
   const rupturesParDecennie = P.rupturesParDecennie as number[] | undefined;
   const heritageBonus = typeof P.heritageBonus === 'number' ? (P.heritageBonus as number) : 0;
@@ -141,7 +140,7 @@ export function creerMoteur(contenu: Contenu, params: Parametres): Moteur {
       nbJoueurs: n, rng: config.graine | 0, phase: 'visions', decennie: 0, tour: 0, rang: 0, premier: 0, courant: 0,
       axes: C.axes.map(() => centre), histoire: [], fermees: new Array(NA * 2).fill(false),
       tendances: [], piocheT: [], defausseT: [], piocheS: [], piocheR: [], piocheV: [],
-      horizon: [], ruptures: [], signauxResolus: [], rupturesVues: [], joueurs: [], prochainUid: 1, nbCoups: 0,
+      horizon: [], ruptures: [], signauxResolus: [], rupturesVues: [], joueurs: [], prochainUid: 1, nbCoups: 0, veille: 0,
     };
     e.histoire.push(e.axes.slice());
     e.piocheT = melanger(e, C.tendances.map((_, i) => i));
@@ -172,14 +171,13 @@ export function creerMoteur(contenu: Contenu, params: Parametres): Moteur {
       return coups;
     }
     if (e.phase === 'veille') {
-      if (j.attention > 0) {
-        for (const s of e.horizon) {
-          let deja = false, n1 = 0, n0 = 0;
-          for (const p of s.paris) { if (p.j === e.courant) { deja = true; break; } if (p.lecture === 1) n1++; else n0++; }
-          if (deja) continue;
-          if (placesParLecture === 0 || n1 < placesParLecture) coups.push({ t: 'parier', uid: s.uid, lecture: 1 });
-          if (placesParLecture === 0 || n0 < placesParLecture) coups.push({ t: 'parier', uid: s.uid, lecture: 0 });
-        }
+      // le jeton est déjà posé sur le signal regardé : on l'oriente (▲ ou ▼, une place par lecture) ou on le retire
+      const s = e.horizon.find((x) => x.uid === e.veille);
+      if (s) {
+        let n1 = 0, n0 = 0;
+        for (const p of s.paris) { if (p.lecture === 1) n1++; else n0++; }
+        if (placesParLecture === 0 || n1 < placesParLecture) coups.push({ t: 'parier', uid: s.uid, lecture: 1 });
+        if (placesParLecture === 0 || n0 < placesParLecture) coups.push({ t: 'parier', uid: s.uid, lecture: 0 });
       }
       coups.push({ t: 'renoncer' });
       return coups;
@@ -188,8 +186,12 @@ export function creerMoteur(contenu: Contenu, params: Parametres): Moteur {
     for (const t of e.tendances) {
       if (t.proprio !== e.courant && t.age < P.ageVerrou && P.coutInflechir[t.age] <= j.attention) coups.push({ t: 'inflechir', id: t.id });
     }
-    for (const s of e.horizon) coups.push({ t: 'veiller', uid: s.uid });
     if (j.attention > 0) {
+      for (const s of e.horizon) {
+        let deja = false;
+        for (const p of s.paris) if (p.j === e.courant) { deja = true; break; }
+        if (!deja) coups.push({ t: 'veiller', uid: s.uid });
+      }
       for (const r of e.ruptures) if (!r.prepares.includes(e.courant)) coups.push({ t: 'preparer', carte: r.carte });
     }
     if (j.main.length + P.piocheProspecter <= P.mainMax && e.piocheT.length + e.defausseT.length > 0) coups.push({ t: 'prospecter' });
@@ -362,7 +364,12 @@ export function creerMoteur(contenu: Contenu, params: Parametres): Moteur {
       e.phase = 'fin';
       journal?.push({ t: 'fin' });
     } else {
-      e.premier = (e.premier + 1) % e.nbJoueurs;
+      if (P.ordreRattrapage) {
+        // le joueur qui a le moins de points d'anticipation ouvre la décennie (à égalité : le plus proche à gauche de l'ancien premier joueur)
+        let best = -1, bv = Infinity;
+        for (let k = 1; k <= e.nbJoueurs; k++) { const j = (e.premier + k) % e.nbJoueurs; if (e.joueurs[j].anticipation < bv) { bv = e.joueurs[j].anticipation; best = j; } }
+        e.premier = best;
+      } else e.premier = (e.premier + 1) % e.nbJoueurs;
       debutDecennie(e, journal);
     }
   }
@@ -404,6 +411,8 @@ export function creerMoteur(contenu: Contenu, params: Parametres): Moteur {
       }
       case 'veiller': {
         if (!j.connus.includes(c.uid)) j.connus.push(c.uid);
+        j.attention--; // veiller engage un jeton d'attention
+        e.veille = c.uid;
         journal?.push({ t: 'veiller', j: jc, uid: c.uid });
         e.phase = 'veille';
         return false;
@@ -412,11 +421,13 @@ export function creerMoteur(contenu: Contenu, params: Parametres): Moteur {
         const s = e.horizon.find((x) => x.uid === c.uid)!;
         const precoce = s.zone === 0;
         s.paris.push({ j: jc, lecture: c.lecture, precoce });
-        j.attention--;
+        e.veille = 0;
         journal?.push({ t: 'parier', j: jc, uid: c.uid, lecture: c.lecture, precoce });
         break;
       }
       case 'renoncer':
+        j.depense++; // le jeton engagé pour regarder ne revient qu'au bilan
+        e.veille = 0;
         journal?.push({ t: 'renoncer', j: jc });
         break;
       case 'preparer': {
@@ -462,8 +473,8 @@ export function creerMoteur(contenu: Contenu, params: Parametres): Moteur {
       let vision = 0;
       if (j.vision >= 0) {
         const v = C.visions[j.vision];
-        vision += ptsVision(0, versPole(e.axes[v.principal.axe], v.principal.pole) - centre);
-        vision += ptsVision(1, versPole(e.axes[v.secondaire.axe], v.secondaire.pole) - centre);
+        vision += ptsVision(0, e.axes[v.principal.axe] - v.principal.case);
+        vision += ptsVision(1, e.axes[v.secondaire.axe] - v.secondaire.case);
       }
       let heritage = 0;
       if (heritageBonus > 0) {
@@ -540,7 +551,7 @@ export function creerMoteur(contenu: Contenu, params: Parametres): Moteur {
     }
     for (let jc = 0; jc < e.nbJoueurs; jc++) {
       const j = e.joueurs[jc];
-      let n = j.attention + j.depense;
+      let n = j.attention + j.depense + (e.phase === 'veille' && e.courant === jc ? 1 : 0);
       for (const s of e.horizon) for (const p of s.paris) if (p.j === jc) n++;
       for (const r of e.ruptures) if (r.prepares.includes(jc)) n++;
       if (n !== P.jetonsAttention) err.push(`attention joueur ${jc} : ${n}`);

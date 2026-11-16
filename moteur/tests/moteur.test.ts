@@ -12,12 +12,17 @@ import { CONTENU, PARAMETRES } from '../../contenu';
 const C = CONTENU, P = PARAMETRES;
 const idx = (id: string) => C.tendances.findIndex((t) => t.id === id);
 
-/** Termine la décennie en cours en ne faisant que prospecter / passer / veiller sans parier. */
-function finirDecennie(e: Etat, m = moteur, journal?: Evenement[]): Etat {
+/** Termine la décennie en cours sans rien changer au monde : saute au dernier tour de table, puis joue un coup neutre. */
+function finirDecennie(e0: Etat, m = moteur, journal?: Evenement[]): Etat {
+  let e = e0;
   const d = e.decennie;
+  if (e.phase === 'actions') {
+    e = cloner(e);
+    e.tour = m.actionsParDecennie(e.nbJoueurs) - 1; e.rang = e.nbJoueurs - 1; e.courant = (e.premier + e.rang) % e.nbJoueurs;
+  }
   while (e.phase !== 'fin' && e.decennie === d) {
     const l = m.coupsLegaux(e);
-    const c = l.find((x) => x.t === 'renoncer') ?? l.find((x) => x.t === 'prospecter') ?? l.find((x) => x.t === 'veiller') ?? l.find((x) => x.t === 'passer') ?? l[0];
+    const c = l.find((x) => x.t === 'renoncer') ?? l.find((x) => x.t === 'prospecter') ?? l.find((x) => x.t === 'passer') ?? l.find((x) => x.t === 'veiller') ?? l.find((x) => x.t === 'preparer') ?? l[0];
     e = m.jouer(e, c, journal);
   }
   return e;
@@ -97,6 +102,7 @@ describe('pureté et déterminisme', () => {
     const e = apresVisions(2, 3);
     expect(() => moteur.jouer(e, { t: 'installer', carte: e.joueurs[1].main[0] })).toThrow(/illégal/);
     expect(() => moteur.jouer(e, { t: 'parier', uid: e.horizon[0].uid, lecture: 1 })).toThrow(/illégal/);
+    expect(() => moteur.jouer(e, { t: 'renoncer' })).toThrow(/illégal/);
   });
 });
 
@@ -215,8 +221,14 @@ describe('signaux', () => {
     expect(e.courant).toBe(moi);
     expect(moteur.observer(e, moi).horizon[0].carte).toBe(sig('S01'));
     expect(moteur.observer(e, 1 - moi).horizon[0].carte).toBe(-1);
+    expect(e.joueurs[moi].attention).toBe(P.jetonsAttention - 1); // regarder engage un jeton
+    // on ne peut parier que sur le signal qu'on vient de regarder
+    expect(moteur.coupsLegaux(e)).toEqual([{ t: 'parier', uid: 900, lecture: 1 }, { t: 'parier', uid: 900, lecture: 0 }, { t: 'renoncer' }]);
     e = moteur.jouer(e, { t: 'renoncer' });
     expect(e.courant).toBe(1 - moi);
+    expect(e.joueurs[moi].attention).toBe(P.jetonsAttention - 1);
+    expect(e.joueurs[moi].depense).toBe(1); // le jeton retiré ne revient qu'au bilan
+    expect(moteur.verifier(e)).toEqual([]);
   });
   it('double lecture : le contexte décide de la tendance qui naît, et paie le bon pari', () => {
     // S01 : condition Technique ; haut → Lien/Commun ; bas → Lien/Autonomie
@@ -259,14 +271,22 @@ describe('signaux', () => {
       expect(e.tendances.length).toBe(0);
     }
   });
-  it('un seul pari par joueur et par signal', () => {
+  it('une seule place par lecture ; un joueur ne re-veille pas un signal où il a déjà parié', () => {
     let e = avecSignal('S01', 1);
+    const moi = e.courant;
     e = moteur.jouer(e, { t: 'veiller', uid: 900 });
     e = moteur.jouer(e, { t: 'parier', uid: 900, lecture: 0 });
+    // l'autre joueur regarde le même signal : seule la lecture ▲ reste libre
     e = moteur.jouer(e, { t: 'veiller', uid: 900 });
-    e = moteur.jouer(e, { t: 'renoncer' });
-    e = moteur.jouer(e, { t: 'veiller', uid: 900 });
-    expect(moteur.coupsLegaux(e)).toEqual([{ t: 'renoncer' }]);
+    expect(moteur.coupsLegaux(e)).toEqual([{ t: 'parier', uid: 900, lecture: 1 }, { t: 'renoncer' }]);
+    e = moteur.jouer(e, { t: 'parier', uid: 900, lecture: 1 });
+    expect(e.courant).toBe(moi);
+    expect(moteur.coupsLegaux(e).some((c) => c.t === 'veiller' && c.uid === 900)).toBe(false);
+  });
+  it('sans jeton d’attention libre, impossible de veiller', () => {
+    const e = avecSignal('S01', 1);
+    e.joueurs[e.courant].attention = 0; e.joueurs[e.courant].depense = P.jetonsAttention;
+    expect(moteur.coupsLegaux(e).some((c) => c.t === 'veiller')).toBe(false);
   });
 });
 
@@ -328,11 +348,13 @@ describe('ruptures', () => {
 });
 
 describe('scores et fin de partie', () => {
-  it('vision, héritage et anticipation s’additionnent', () => {
+  it('vision (viser juste), héritage et anticipation s’additionnent', () => {
     const e = cloner(apresVisions(2, 51));
-    const v = C.visions.findIndex((x) => x.id === 'V01'); // principal Matière/Sobriété, secondaire Échelle/Local
+    const v = C.visions.findIndex((x) => x.id === 'V01'); // principal Matière en case 3, secondaire Échelle en case 2
+    expect(C.visions[v].principal).toEqual({ axe: 0, pole: 0, case: 3 });
+    expect(C.visions[v].secondaire).toEqual({ axe: 2, pole: 0, case: 2 });
     e.joueurs[0].vision = v;
-    e.axes = [1, 5, 3, 9];
+    e.axes = [1, 5, 3, 9]; // Matière a dépassé la cible de 2 cases ; Échelle est à 1 case de la sienne
     e.tendances = [
       { id: 0, axe: 0, pole: 0, force: 1, proprio: 0, age: 2, pose: 0, lecture: -1 }, // du bon côté
       { id: 8, axe: 0, pole: 1, force: 1, proprio: 0, age: 2, pose: 0, lecture: -1 }, // du mauvais côté
@@ -341,11 +363,17 @@ describe('scores et fin de partie', () => {
     ];
     e.joueurs[0].anticipation = 4;
     const s = moteur.scores(e)[0];
-    expect(s.vision).toBe(P.ptsVisionPrincipal * 4 + P.ptsVisionSecondaire * 2);
+    expect(s.vision).toBe(P.baremePrincipal[2] + P.baremeSecondaire[1]);
     expect(s.heritage).toBe(P.ptsHeritage);
-    expect(s.anticipation).toBe(4);
     expect(s.total).toBe(s.vision + s.heritage + 4);
     expect(moteur.scores(e)[1].heritage).toBe(P.ptsHeritage);
+    e.axes = [3, 5, 2, 9];
+    expect(moteur.scores(e)[0].vision).toBe(P.baremePrincipal[0] + P.baremeSecondaire[0]); // pile sur les deux cibles
+    e.axes = [9, 5, 9, 9];
+    expect(moteur.scores(e)[0].vision).toBe(0);
+    expect(moteur.ptsVision(0, 0.5)).toBeCloseTo((P.baremePrincipal[0] + P.baremePrincipal[1]) / 2);
+    expect(moteur.ptsVision(0, -1)).toBe(P.baremePrincipal[1]);
+    expect(moteur.ptsVision(0, 9)).toBe(0);
   });
   it('la partie dure exactement cinq décennies et se termine en phase « fin »', () => {
     let e = apresVisions(4, 61);

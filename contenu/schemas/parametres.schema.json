@@ -20,11 +20,13 @@
     "ptsSignalPrecoce",
     "ptsSignalTardif",
     "ptsRupture",
-    "ptsVisionPrincipal",
-    "ptsVisionSecondaire",
     "ptsHeritage",
     "rupturesLatentesMax",
-    "facesDe"
+    "facesDe",
+    "baremePrincipal",
+    "baremeSecondaire",
+    "seuilBascule",
+    "placesParLecture"
   ],
   "properties": {
     "version": {
@@ -107,14 +109,6 @@
       "type": "number",
       "minimum": 0
     },
-    "ptsVisionPrincipal": {
-      "type": "number",
-      "minimum": 0
-    },
-    "ptsVisionSecondaire": {
-      "type": "number",
-      "minimum": 0
-    },
     "ptsHeritage": {
       "type": "number",
       "minimum": 0
@@ -163,6 +157,10 @@
         "type": "integer",
         "minimum": 0
       }
+    },
+    "ordreRattrapage": {
+      "type": "boolean",
+      "description": "le joueur ayant le moins de points d'anticipation ouvre chaque décennie"
     }
   }
 }

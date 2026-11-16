@@ -108,11 +108,11 @@ export function racconter(C: Contenu, journal: Evenement[], noms: string[], hist
       // regroupé plus bas via l'histoire
     } else if (ev.t === 'signalAmplifie') {
       const s = C.signaux[ev.carte]; const l = (ev.lecture === 1 ? s.haut : s.bas)!;
-      const qui = ev.gains.length ? ` ${liste(ev.gains.map((g) => noms[g.j]))} l’avai${ev.gains.length > 1 ? 'en' : ''}t vu venir.` : ' Personne ne l’avait vu venir.';
+      const qui = ev.gains.length ? ` Pari gagné : ${liste(ev.gains.map((g) => noms[g.j]))}.` : ' Personne ne l’avait vu venir.';
       courant.push(`Un signal faible devient une force : « ${s.titre} » débouche sur « ${l.titre} », qui pousse vers ${nomPole(C, l.axe, l.pole)}.${qui}`);
     } else if (ev.t === 'rupture') {
       const r = C.ruptures[ev.carte];
-      const qui = ev.gains.length ? ` ${liste(ev.gains.map((g) => noms[g.j]))} s’y étai${ev.gains.length > 1 ? 'en' : ''}t préparé${ev.gains.length > 1 ? 's' : ''}.` : ' Nul ne s’y était préparé.';
+      const qui = ev.gains.length ? ` Préparation payante : ${liste(ev.gains.map((g) => noms[g.j]))}.` : ' Nul ne s’y était préparé.';
       courant.push(`RUPTURE — ${r.titre}. ${r.texte}${qui}`);
     } else if (ev.t === 'bascule') {
       courant.push(`Point de non-retour : la voie « ${nomPole(C, ev.axe, ev.poleFerme)} » se ferme pour de bon. Le monde a choisi ${nomPole(C, ev.axe, 1 - ev.poleFerme)}.`);
@@ -140,7 +140,7 @@ export function portrait(C: Contenu, type: number, axes: number[], centre: numbe
     const force = Math.abs(d) >= 4 ? 'résolument' : Math.abs(d) >= 2 ? 'nettement' : 'légèrement';
     traits.push(`${force} du côté ${nomPole(C, a, d > 0 ? 1 : 0)}`);
   }
-  return `${t.nom}. ${t.texte}` + (traits.length ? ` En 2075, le monde est ${liste(traits)}.` : ' En 2075, le monde n’a tranché sur rien.');
+  return t.texte + (traits.length ? ` En 2075, le monde est ${liste(traits)}.` : ' En 2075, le monde n’a tranché sur rien.');
 }
 
 export function decrireScore(s: Score): string { return `${s.total} points (vision ${s.vision}, héritage ${s.heritage}, anticipation ${s.anticipation})`; }

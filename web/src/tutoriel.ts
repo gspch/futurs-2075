@@ -1,0 +1,17 @@
+// Tutoriel guidé : une première décennie à deux joueurs, où l'on découvre les trois types de cartes en les jouant.
+// Chaque étape restreint les coups proposés (attend) et fait pulser la zone concernée (cible).
+import type { Coup } from '../../moteur/src/types';
+
+export interface EtapeTuto { id: string; titre: string; texte: string; attend?: (c: Coup) => boolean; cible?: string }
+
+export const ETAPES_TUTO: EtapeTuto[] = [
+  { id: 'intro', titre: 'Un monde, quatre tensions', texte: 'Nous sommes en 2025. Le monde est décrit par quatre axes, chacun tendu entre deux pôles : aucun n’est « le bon ». Les pions sont au centre. Tout le monde joue sur le <strong>même</strong> monde.' },
+  { id: 'vision', titre: 'Votre futur souhaitable', texte: 'Choisissez l’une de vos deux visions. Elle est secrète et vise des <strong>cases précises</strong> : vous marquerez d’autant plus que le monde de 2075 en sera proche. Regardez votre main : quelles cartes vous aideraient ?', attend: (c) => c.t === 'vision', cible: 'vision' },
+  { id: 'tendance', titre: 'Les tendances : lentes et cumulatives', texte: 'Cliquez une carte de votre main, puis <strong>Installer</strong>. Rien ne bouge tout de suite : une tendance pousse son axe à <em>chaque</em> bilan de décennie. Le cercle pointillé « 2075? » montre le <strong>futur probable</strong> ; vos étoiles ★ ☆ le futur que vous souhaitez.', attend: (c) => c.t === 'installer', cible: 'main' },
+  { id: 'signal', titre: 'Les signaux faibles : regarder avant les autres', texte: 'À l’Horizon, des signaux sont face cachée. Cliquez-en un puis <strong>Veiller</strong> : vous y posez un jeton d’attention et vous seul le regardez.', attend: (c) => c.t === 'veiller', cible: 'signal' },
+  { id: 'pari', titre: 'Un signal, deux lectures', texte: 'Lisez la carte : selon le côté où penchera son axe de <strong>contexte</strong> au moment du bilan, le signal deviendra une tendance ▲, une autre ▼… ou s’éteindra. Orientez votre jeton sur une lecture (une seule place par lecture : premier arrivé, premier servi), ou retirez-le. Dans les deux cas le jeton est immobilisé ; vous n’en avez que trois.', attend: (c) => c.t === 'parier' || c.t === 'renoncer', cible: 'action' },
+  { id: 'rupture', titre: 'Les ruptures : improbables, visibles, brutales', texte: 'Une rupture latente est affichée à droite. Sa <strong>tension</strong> monte quand le monde s’avance loin vers son terrain ; au bilan, un dé décide. Cliquez-la : vous pouvez vous y <strong>préparer</strong> (un jeton), ou jouer autre chose si vous la jugez trop improbable.', attend: (c) => c.t !== 'vision', cible: 'rupture' },
+  { id: 'libre', titre: 'Terminez la décennie', texte: 'Jouez votre dernière action comme vous l’entendez. Astuce : cliquer une tendance adverse encore émergente (◌) permet de l’<strong>infléchir</strong> avant qu’elle ne s’ancre.', attend: (c) => c.t !== 'vision' },
+  { id: 'bilan', titre: 'Le bilan : le temps passe', texte: 'Lisez le bilan : chaque axe a avancé d’une case vers le côté le plus lourd, les signaux proches se sont résolus, la rupture a été mise à l’épreuve. Les tendances s’ancrent : émergente ◌ → installée ◐ → verrouillée 🔒. Ce qui est verrouillé pèsera jusqu’en 2075.' },
+  { id: 'fin', titre: 'À vous de jouer', texte: 'Vous connaissez l’essentiel. Deux pièges à garder en tête : un axe qui va trop loin <strong>dépasse</strong> votre cible et ferme pour de bon la voie opposée ; et plus le monde est extrême, plus les ruptures deviennent probables. Bonne trajectoire !' },
+];

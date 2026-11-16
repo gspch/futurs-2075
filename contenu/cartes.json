@@ -1475,11 +1475,13 @@
    "texte": "Des pays sobres, organisés à hauteur de bassin de vie.",
    "principal": {
     "axe": 0,
-    "pole": 0
+    "pole": 0,
+    "case": 3
    },
    "secondaire": {
     "axe": 2,
-    "pole": 0
+    "pole": 0,
+    "case": 2
    }
   },
   {
@@ -1488,11 +1490,13 @@
    "texte": "Peu de choses, mais décidées et réparties ensemble.",
    "principal": {
     "axe": 0,
-    "pole": 0
+    "pole": 0,
+    "case": 1
    },
    "secondaire": {
     "axe": 3,
-    "pole": 1
+    "pole": 1,
+    "case": 7
    }
   },
   {
@@ -1501,11 +1505,13 @@
    "texte": "Des machines qui produisent assez pour tous.",
    "principal": {
     "axe": 0,
-    "pole": 1
+    "pole": 1,
+    "case": 7
    },
    "secondaire": {
     "axe": 1,
-    "pole": 1
+    "pole": 1,
+    "case": 8
    }
   },
   {
@@ -1514,11 +1520,13 @@
    "texte": "Un monde ouvert où les ressources circulent sans entrave.",
    "principal": {
     "axe": 0,
-    "pole": 1
+    "pole": 1,
+    "case": 9
    },
    "secondaire": {
     "axe": 2,
-    "pole": 1
+    "pole": 1,
+    "case": 7
    }
   },
   {
@@ -1527,11 +1535,13 @@
    "texte": "Des outils simples au service de vies indépendantes.",
    "principal": {
     "axe": 1,
-    "pole": 0
+    "pole": 0,
+    "case": 3
    },
    "secondaire": {
     "axe": 3,
-    "pole": 0
+    "pole": 0,
+    "case": 2
    }
   },
   {
@@ -1540,11 +1550,13 @@
    "texte": "Des techniques robustes pour un monde économe.",
    "principal": {
     "axe": 1,
-    "pole": 0
+    "pole": 0,
+    "case": 1
    },
    "secondaire": {
     "axe": 0,
-    "pole": 0
+    "pole": 0,
+    "case": 3
    }
   },
   {
@@ -1553,11 +1565,13 @@
    "texte": "L’automatisation au service d’une vie matérielle facile.",
    "principal": {
     "axe": 1,
-    "pole": 1
+    "pole": 1,
+    "case": 7
    },
    "secondaire": {
     "axe": 0,
-    "pole": 1
+    "pole": 1,
+    "case": 8
    }
   },
   {
@@ -1566,11 +1580,13 @@
    "texte": "Les machines travaillent, la société se retrouve.",
    "principal": {
     "axe": 1,
-    "pole": 1
+    "pole": 1,
+    "case": 9
    },
    "secondaire": {
     "axe": 3,
-    "pole": 1
+    "pole": 1,
+    "case": 7
    }
   },
   {
@@ -1579,11 +1595,13 @@
    "texte": "Des territoires qui savent faire par eux-mêmes.",
    "principal": {
     "axe": 2,
-    "pole": 0
+    "pole": 0,
+    "case": 3
    },
    "secondaire": {
     "axe": 1,
-    "pole": 0
+    "pole": 0,
+    "case": 2
    }
   },
   {
@@ -1592,11 +1610,13 @@
    "texte": "De petites communautés où chacun mène sa barque.",
    "principal": {
     "axe": 2,
-    "pole": 0
+    "pole": 0,
+    "case": 1
    },
    "secondaire": {
     "axe": 3,
-    "pole": 0
+    "pole": 0,
+    "case": 3
    }
   },
   {
@@ -1605,11 +1625,13 @@
    "texte": "Une planète tissée de flux et de machines.",
    "principal": {
     "axe": 2,
-    "pole": 1
+    "pole": 1,
+    "case": 7
    },
    "secondaire": {
     "axe": 1,
-    "pole": 1
+    "pole": 1,
+    "case": 8
    }
   },
   {
@@ -1618,11 +1640,13 @@
    "texte": "Biens, idées et personnes voyagent sans limite.",
    "principal": {
     "axe": 2,
-    "pole": 1
+    "pole": 1,
+    "case": 9
    },
    "secondaire": {
     "axe": 0,
-    "pole": 1
+    "pole": 1,
+    "case": 7
    }
   },
   {
@@ -1631,11 +1655,13 @@
    "texte": "Des individus libres de leurs attaches, chez eux partout.",
    "principal": {
     "axe": 3,
-    "pole": 0
+    "pole": 0,
+    "case": 3
    },
    "secondaire": {
     "axe": 2,
-    "pole": 1
+    "pole": 1,
+    "case": 8
    }
   },
   {
@@ -1644,11 +1670,13 @@
    "texte": "Chacun maître de ses outils et de son temps.",
    "principal": {
     "axe": 3,
-    "pole": 0
+    "pole": 0,
+    "case": 1
    },
    "secondaire": {
     "axe": 1,
-    "pole": 0
+    "pole": 0,
+    "case": 3
    }
   },
   {
@@ -1657,11 +1685,13 @@
    "texte": "Une société solidaire qui se contente de l’essentiel.",
    "principal": {
     "axe": 3,
-    "pole": 1
+    "pole": 1,
+    "case": 7
    },
    "secondaire": {
     "axe": 0,
-    "pole": 0
+    "pole": 0,
+    "case": 2
    }
   },
   {
@@ -1670,11 +1700,13 @@
    "texte": "L’entraide et la décision au coin de la rue.",
    "principal": {
     "axe": 3,
-    "pole": 1
+    "pole": 1,
+    "case": 9
    },
    "secondaire": {
     "axe": 2,
-    "pole": 0
+    "pole": 0,
+    "case": 3
    }
   }
  ],

@@ -72,3 +72,48 @@ et une bascule à 4 cases du centre, les axes restent disputés plus longtemps.
 Le dernier ne revient toujours pas (un diagnostic dédié montre qu'à 5 joueurs, même entre bots identiques, l'écart moyen de 8,5 points en 2055 n'est jamais remonté :
 le meneur continue de gagner des points de vision par simple inertie). Leviers essayés sans effet sur C4 : barème de vision concave, ruptures plus nombreuses en fin de partie,
 bonus de cohérence sur l'héritage. Le pas d'une case est conservé pour sa lisibilité, mais il faut une autre voie pour redonner de la profondeur : voir v0.4.
+
+## v0.4 — Viser juste : les visions ont une cible, pas une direction
+
+**Hypothèse.** Le jeu est plat et sans retour parce que « souhaitable » veut dire « le plus loin possible » : le meneur n'a qu'à laisser l'inertie travailler pour lui.
+Si chaque vision vise une **case précise** (réformiste : 2 cases du centre ; radicale : 4 cases), l'inertie devient un danger pour celui-là même qui l'a créée :
+il faut freiner à temps, et les adversaires peuvent pousser *dans le même sens* pour faire dépasser la cible. C'est aussi plus juste sur le fond : un futur souhaitable n'est pas un extrême.
+
+**Changement.** Cartes Vision : objectif principal et secondaire = (axe, case). Barèmes selon l'écart à la case visée : principal `10 / 7 / 4 / 1`, secondaire `5 / 3 / 1`.
+Deux visions principales par pôle : une réformiste (case 3 ou 7, secondaire à 3 cases du centre) et une radicale (case 1 ou 9, secondaire à 2 cases).
+
+| | C1 | C2 | C3 | C4 (2 / 3 / 4 / 5 j.) | C5 | C6 | C8 | meneur de 2055 gagne (5 j.) |
+|--|----|----|----|----|----|----|----|----|
+| avant (v0.3) | ✘ 1,36 | ✘ −3,6 | ✔ 91 % / ✘ 43 % | ✘ 21 / 7,4 / 3,0 / 1,5 % | ✔ 5,0 | ✔ 18 % | ✔ 4,3 | 56 % |
+| après (v0.4) | ✘ 1,37 (chasseur, 4 j.) | ✔ −2,2 | ✔ 93 % / ✔ 62 % | ✘ 29 / 12 / 6,7 / 3,9 % | ✔ 5,0 | ✔ 16 % | ✔ 4,0 | 43 % |
+
+**Conclusion.** Hypothèse confirmée sur la profondeur (l'expert rebat le glouton, +19 points) et sur le suspense (le meneur de 2055 ne gagne plus que 43 à 49 % des parties à 4-5 joueurs,
+le dernier revient deux à trois fois plus souvent). Insuffisant pour C4 à 4-5 joueurs. Nouveau défaut mis en évidence : installer étant devenu risqué, les bots veillent sans arrêt
+(21 à 31 veilles par partie, dont un tiers sans pari) : regarder ne coûte qu'un tour. Voir v0.5.
+
+## v0.5 — Regarder coûte un jeton
+
+**Hypothèse.** Les bots veillent sans arrêt parce que regarder un signal ne coûte qu'un tour. Si l'attention est vraiment la ressource rare du jeu, regarder doit en consommer.
+
+**Changement.** Veiller = poser un jeton d'attention sur le signal, le regarder, puis orienter ce jeton (▲ ou ▼) ou le retirer (il ne revient qu'au bilan).
+On ne parie plus que sur le signal qu'on vient de regarder. Sans jeton libre, pas de veille.
+
+| | C1 | C2 | C3 | C4 (2 / 3 / 4 / 5 j.) | C5 | C6 | C8 | veilles / installations (2 j.) |
+|--|----|----|----|----|----|----|----|----|
+| avant (v0.4) | ✘ 1,37 | ✔ −2,2 | ✔ 93 % / ✔ 62 % | ✘ 29 / 12 / 6,7 / 3,9 % | ✔ 5,0 | ✔ 16 % | ✔ 4,0 | 21 / 12 |
+| après (v0.5) | ✘ 1,33 (chasseur, 4 j.) | ✔ 1,5 | ✔ 95 % / ✘ 56 % | ✘ 29 / 14 / 6,2 / 3,4 % | ✔ 4,6 | ✔ 16 % | ✔ 3,1 | 13 / 17 |
+
+**Conclusion.** Confirmée à 2-3 joueurs (on installe de nouveau plus qu'on ne veille), partielle à 4-5 joueurs où l'on veille encore un tour sur deux.
+C1 frôle le seuil. L'expert contre le glouton retombe à 56 % (intervalle [50 ; 61], 300 parties : à remesurer sur 10 000). C8 baisse parce qu'il y a moins de coups légaux (6,7 contre 10,4), pas moins de coups défendables en proportion.
+
+## v0.6 — Construire paie autant qu'anticiper
+
+**Hypothèse.** L'anticipation pèse encore la moitié des points parce qu'une tendance installée ne rapporte qu'un point d'héritage, moins qu'un pari tardif réussi par action.
+En doublant l'héritage, bâtir la trajectoire redevient le cœur du jeu, et un joueur mal parti peut se refaire en accompagnant le futur probable.
+
+**Changement.** `ptsHeritage` 1 → 2.
+
+Mesure exploratoire (1 500 parties par configuration, bots non recalibrés) : C1 1,38 (glouton, 5 j.) ; C4 4,6 % (5 j.) et 8,0 % (4 j.) ; héritage = un tiers du score (6,1 points sur 18,0 à 4 joueurs,
+contre 2,6 sur 14,6) ; 23 installations pour 23 veilles à 4 joueurs (contre 20 / 26).
+
+**Conclusion.** Confirmée : les trois sources de points s'équilibrent (vision 5,0 · héritage 6,1 · anticipation 6,9 à 4 joueurs). Le retour du dernier progresse sans atteindre le seuil. Mesure complète faite avec la v0.7, qui ajoute un seul changement.

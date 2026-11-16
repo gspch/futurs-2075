@@ -119,13 +119,15 @@ export function scoreAttendu(m: Moteur, e: Etat, j: number, w: Poids, pas: numbe
   const P = m.params, C = m.contenu, centre = m.centre;
   const joueur = e.joueurs[j];
   let v = 0;
-  let p1 = -1, p2 = -1;
   if (joueur.vision >= 0) {
     const vis = C.visions[joueur.vision];
-    p1 = vis.principal.axe * 2 + vis.principal.pole; p2 = vis.secondaire.axe * 2 + vis.secondaire.pole;
-  } else if (joueur.vision === -2) [p1, p2] = visionPresumee(e, j);
-  if (p1 >= 0) { const a = p1 >> 1; v += m.ptsVision(0, ((p1 & 1) === 1 ? f[a] : P.pisteMax - f[a]) - centre); }
-  if (p2 >= 0) { const a = p2 >> 1; v += m.ptsVision(1, ((p2 & 1) === 1 ? f[a] : P.pisteMax - f[a]) - centre); }
+    v += m.ptsVision(0, f[vis.principal.axe] - vis.principal.case) + m.ptsVision(1, f[vis.secondaire.axe] - vis.secondaire.case);
+  } else if (joueur.vision === -2) {
+    // vision adverse inconnue : on suppose qu'il vise 3 cases (principal) et 2 cases (secondaire) du côté qu'il pousse le plus
+    const [p1, p2] = visionPresumee(e, j);
+    if (p1 >= 0) v += m.ptsVision(0, f[p1 >> 1] - (centre + ((p1 & 1) === 1 ? 3 : -3)));
+    if (p2 >= 0) v += m.ptsVision(1, f[p2 >> 1] - (centre + ((p2 & 1) === 1 ? 2 : -2)));
+  }
   let h = 0;
   const hb = (P.heritageBonus as number) || 0;
   const parAxe = [0, 0, 0, 0];

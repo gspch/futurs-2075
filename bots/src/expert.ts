@@ -101,9 +101,14 @@ export function politiqueRapide(m: Moteur, e: Etat, coups: Coup[], r: { rng: num
   const C = m.contenu, P = m.params, centre = m.centre;
   const jc = e.courant;
   const j = e.joueurs[jc];
-  const vis = j.vision >= 0 ? C.visions[j.vision] : null;
-  const p1 = vis ? vis.principal.axe * 2 + vis.principal.pole : -1;
-  const p2 = vis ? vis.secondaire.axe * 2 + vis.secondaire.pole : -1;
+  // direction voulue sur chaque axe : vers la case visée par la vision, d'après la projection tendancielle
+  const veut = [0, 0, 0, 0], poidsAxe = [0, 0, 0, 0];
+  if (j.vision >= 0) {
+    const vis = C.visions[j.vision];
+    const proj = m.projection(e);
+    veut[vis.principal.axe] = Math.sign(vis.principal.case - proj[vis.principal.axe]); poidsAxe[vis.principal.axe] = 2.4;
+    veut[vis.secondaire.axe] = Math.sign(vis.secondaire.case - proj[vis.secondaire.axe]); poidsAxe[vis.secondaire.axe] = 1.6;
+  }
   let total = 0;
   const sc: number[] = [];
   let jouable = false;
@@ -113,17 +118,18 @@ export function politiqueRapide(m: Moteur, e: Etat, coups: Coup[], r: { rng: num
       case 'vision': s = 1; break;
       case 'installer': {
         const t = C.tendances[c.carte];
-        const k = t.axe * 2 + t.pole;
-        const d = (t.pole === 1 ? 1 : -1) * (e.axes[t.axe] - centre);
-        s = k === p1 ? 2.4 : k === p2 ? 1.6 : (k ^ 1) === p1 || (k ^ 1) === p2 ? 0.03 : d > 0 ? 0.8 : d === 0 ? 0.35 : 0.1;
+        const sens = t.pole === 1 ? 1 : -1;
+        const d = sens * (e.axes[t.axe] - centre);
+        if (poidsAxe[t.axe] > 0) s = veut[t.axe] === sens ? poidsAxe[t.axe] : veut[t.axe] === 0 ? 0.12 : 0.03;
+        else s = d > 0 ? 0.8 : d === 0 ? 0.35 : 0.1;
         s *= t.force;
         jouable = true;
         break;
       }
       case 'inflechir': {
         const t = e.tendances.find((x) => x.id === c.id)!;
-        const k = t.axe * 2 + t.pole;
-        s = (k ^ 1) === p1 ? 1.3 * t.force : (k ^ 1) === p2 ? 0.7 * t.force : 0.03;
+        const sens = t.pole === 1 ? 1 : -1;
+        s = poidsAxe[t.axe] > 0 && veut[t.axe] === -sens ? 0.5 * poidsAxe[t.axe] * t.force : 0.03;
         if (t.age > 0) s *= 0.6;
         break;
       }

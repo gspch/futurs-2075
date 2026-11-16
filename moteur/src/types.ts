@@ -11,7 +11,9 @@ export type Effet =
   | { type: 'purger'; axe: number; pole: number; n: number }
   | { type: 'rebattre' };
 export interface CarteRupture { id: string; titre: string; texte: string; domaine: string; terrain: Cible; tensionMin: number; effets: Effet[] }
-export interface CarteVision { id: string; titre: string; texte: string; principal: Cible; secondaire: Cible }
+/** Objectif d'une vision : amener l'axe exactement sur une case. */
+export interface CibleVision { axe: number; pole: number; case: number }
+export interface CarteVision { id: string; titre: string; texte: string; principal: CibleVision; secondaire: CibleVision }
 export interface TypeSociete { id: string; axe: number | null; pole: number | null; nom: string; texte: string }
 
 export interface Contenu {
@@ -42,8 +44,9 @@ export interface Parametres {
   ptsSignalPrecoce: number;
   ptsSignalTardif: number;
   ptsRupture: number;
-  ptsVisionPrincipal: number;
-  ptsVisionSecondaire: number;
+  /** points de vision selon l'écart (en cases) entre l'axe et la case visée : index 0 = pile sur la cible */
+  baremePrincipal: number[];
+  baremeSecondaire: number[];
   ptsHeritage: number;
   rupturesLatentesMax: number;
   facesDe: number;
@@ -117,6 +120,8 @@ export interface Etat {
   joueurs: Joueur[];
   prochainUid: number;
   nbCoups: number;
+  /** uid du signal en cours de veille (phase « veille »), 0 sinon */
+  veille: number;
 }
 
 export type Coup =

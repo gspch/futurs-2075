@@ -1,5 +1,5 @@
 {
-  "version": "0.3",
+  "version": "0.6",
   "decennies": 5,
   "actionsParDecennie": {
     "2": 4,
@@ -23,11 +23,22 @@
   "ptsSignalPrecoce": 3,
   "ptsSignalTardif": 1,
   "ptsRupture": 3,
-  "ptsVisionPrincipal": 2,
-  "ptsVisionSecondaire": 1,
-  "ptsHeritage": 1,
+  "ptsHeritage": 2,
   "rupturesLatentesMax": 2,
   "facesDe": 6,
   "placesParLecture": 1,
-  "seuilBascule": 4
+  "seuilBascule": 4,
+  "baremePrincipal": [
+    10,
+    7,
+    4,
+    1,
+    0
+  ],
+  "baremeSecondaire": [
+    5,
+    3,
+    1,
+    0
+  ]
 }
