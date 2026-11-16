@@ -5,6 +5,9 @@ import { PARAMETRES } from '../../contenu';
 import { lotLocal } from './parallele';
 import { fusionner, type Agregat } from './stats';
 import { strategies } from './criteres';
+import { Bassin } from './parallele';
+import { rechercheAdverse } from './adverse';
+import type { Parametres } from '../../moteur/src/types';
 
 const REF_CI = 'simulations/reference-ci.json';
 
@@ -32,6 +35,28 @@ function mesuresCI(parties: number, graine: number): MesuresCI {
 }
 
 export const COMMANDES: Record<string, (o: Record<string, string>, reste: string[]) => Promise<void>> = {
+  /** Test adverse : recherche évolutionnaire d'une stratégie dominante (au moins 200 variantes). */
+  async adverse(o) {
+    const bassin = new Bassin();
+    const params = o.params ? (JSON.parse(o.params) as Partial<Parametres>) : undefined;
+    const g = { generations: Number(o.generations ?? 12), population: Number(o.population ?? 24), elites: Number(o.elites ?? 6), parties: Number(o.parties ?? 150), partiesFinales: Number(o.finales ?? 2500), graine: Number(o.graine ?? 4242), params, log: (s: string) => console.error('  ' + s) };
+    const { toutes, finalistes } = await rechercheAdverse(bassin, g);
+    bassin.fermer();
+    console.log(`${toutes.length} variantes évaluées. Finalistes (rejoués sur ${g.partiesFinales} parties par nombre de joueurs) :`);
+    for (const f of finalistes) console.log(`  ratio ${f.ratio.toFixed(3)} [${f.bas.toFixed(3)} ; ${f.haut.toFixed(3)}] (2j ${f.parNb[0].toFixed(2)}, 3j ${f.parNb[1].toFixed(2)}, 4j ${f.parNb[2].toFixed(2)}, 5j ${f.parNb[3].toFixed(2)}) — ${f.origine} — ${JSON.stringify(Object.fromEntries(Object.entries(f.poids).map(([k, v]) => [k, Math.round((v as number) * 100) / 100])))}`);
+    if (o.adopter && finalistes[0]) {
+      const p = { ...finalistes[0].poids } as Record<string, number>;
+      for (const k in p) p[k] = Math.round(p[k] * 100) / 100;
+      p.axe = -1; p.focus = 0; p.bruit = 0.05;
+      fs.writeFileSync('bots/src/poids.json', JSON.stringify(p, null, 1) + '\n');
+      console.log('Poids de référence adoptés dans bots/src/poids.json');
+    }
+    if (o.sortie) {
+      const ratios = toutes.map((v) => v.ratio).sort((a, b) => a - b);
+      fs.writeFileSync(o.sortie, JSON.stringify({ commande: 'npm run adverse -- ' + Object.entries(o).map(([k, v]) => `--${k} ${v}`).join(' '), reglages: { ...g, log: undefined }, nbVariantes: toutes.length, ratios, finalistes }, null, 1));
+      console.log('Résumé écrit dans ' + o.sortie);
+    }
+  },
   /** Simulation courte : échoue si l'équilibre se dégrade nettement par rapport à la dernière version taguée. */
   async ci(o) {
     const parties = Number(o.parties ?? 50), graine = Number(o.graine ?? 7);

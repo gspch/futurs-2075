@@ -83,16 +83,17 @@ export function creerExpert(m: Moteur, reglages: Partial<ReglagesExpert> = {}, n
 
 export const NOMS_AXES = ['matiere', 'technique', 'echelle', 'lien'];
 
-/** Catalogue des stratégies. Chaque entrée est paramétrable par ses poids. */
+/** Catalogue des stratégies : chacune déforme les poids de référence dans le sens de son obsession. */
+const B = POIDS_DEFAUT;
 export const STRATEGIES: Record<string, Partial<Poids>> = {
   glouton: {},
-  'specialiste-matiere': { axe: 0, focus: 2.5 },
-  'specialiste-technique': { axe: 1, focus: 2.5 },
-  'specialiste-echelle': { axe: 2, focus: 2.5 },
-  'specialiste-lien': { axe: 3, focus: 2.5 },
-  chasseur: { veille: 2.2, signal: 1.5, attention: 0.05 },
-  parieur: { rupture: 2.2, veille: 0.5 },
-  bloqueur: { blocage: 0.6 },
+  'specialiste-matiere': { axe: 0, focus: 2 },
+  'specialiste-technique': { axe: 1, focus: 2 },
+  'specialiste-echelle': { axe: 2, focus: 2 },
+  'specialiste-lien': { axe: 3, focus: 2 },
+  chasseur: { veille: B.veille * 1.6 + 0.4, signal: B.signal * 1.5 },
+  parieur: { rupture: B.rupture * 1.6 + 0.4, amorti: Math.min(1, B.amorti + 0.15) },
+  bloqueur: { blocage: B.blocage + 0.5 },
 };
 export const NON_EXPERTS = ['aleatoire', ...Object.keys(STRATEGIES)];
 

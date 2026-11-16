@@ -3,28 +3,143 @@
   "title": "Paramètres d'équilibrage d'Aiguillages",
   "type": "object",
   "additionalProperties": false,
-  "required": ["version","decennies","actionsParDecennie","tailleMain","mainMax","piocheProspecter","jetonsAttention","signauxParDecennie","pisteMax","pasMaxAxe","coutInflechir","ageVerrou","forceSignal","ptsSignalPrecoce","ptsSignalTardif","ptsRupture","ptsVisionPrincipal","ptsVisionSecondaire","ptsHeritage","rupturesLatentesMax","facesDe"],
+  "required": [
+    "version",
+    "decennies",
+    "actionsParDecennie",
+    "tailleMain",
+    "mainMax",
+    "piocheProspecter",
+    "jetonsAttention",
+    "signauxParDecennie",
+    "pisteMax",
+    "pasMaxAxe",
+    "coutInflechir",
+    "ageVerrou",
+    "forceSignal",
+    "ptsSignalPrecoce",
+    "ptsSignalTardif",
+    "ptsRupture",
+    "ptsVisionPrincipal",
+    "ptsVisionSecondaire",
+    "ptsHeritage",
+    "rupturesLatentesMax",
+    "facesDe"
+  ],
   "properties": {
-    "version": { "type": "string" },
-    "decennies": { "type": "integer", "minimum": 1, "maximum": 10 },
-    "actionsParDecennie": { "type": "object", "required": ["2","3","4","5"], "additionalProperties": { "type": "integer", "minimum": 1, "maximum": 8 } },
-    "tailleMain": { "type": "integer", "minimum": 1 },
-    "mainMax": { "type": "integer", "minimum": 1 },
-    "piocheProspecter": { "type": "integer", "minimum": 1 },
-    "jetonsAttention": { "type": "integer", "minimum": 1 },
-    "signauxParDecennie": { "type": "integer", "minimum": 0 },
-    "pisteMax": { "type": "integer", "minimum": 2, "multipleOf": 2 },
-    "pasMaxAxe": { "type": "integer", "minimum": 1 },
-    "coutInflechir": { "type": "array", "items": { "type": "integer", "minimum": 0 }, "minItems": 2, "maxItems": 2 },
-    "ageVerrou": { "type": "integer", "minimum": 1 },
-    "forceSignal": { "type": "integer", "minimum": 1 },
-    "ptsSignalPrecoce": { "type": "number", "minimum": 0 },
-    "ptsSignalTardif": { "type": "number", "minimum": 0 },
-    "ptsRupture": { "type": "number", "minimum": 0 },
-    "ptsVisionPrincipal": { "type": "number", "minimum": 0 },
-    "ptsVisionSecondaire": { "type": "number", "minimum": 0 },
-    "ptsHeritage": { "type": "number", "minimum": 0 },
-    "rupturesLatentesMax": { "type": "integer", "minimum": 1 },
-    "facesDe": { "type": "integer", "minimum": 2 }
+    "version": {
+      "type": "string"
+    },
+    "decennies": {
+      "type": "integer",
+      "minimum": 1,
+      "maximum": 10
+    },
+    "actionsParDecennie": {
+      "type": "object",
+      "required": [
+        "2",
+        "3",
+        "4",
+        "5"
+      ],
+      "additionalProperties": {
+        "type": "integer",
+        "minimum": 1,
+        "maximum": 8
+      }
+    },
+    "tailleMain": {
+      "type": "integer",
+      "minimum": 1
+    },
+    "mainMax": {
+      "type": "integer",
+      "minimum": 1
+    },
+    "piocheProspecter": {
+      "type": "integer",
+      "minimum": 1
+    },
+    "jetonsAttention": {
+      "type": "integer",
+      "minimum": 1
+    },
+    "signauxParDecennie": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "pisteMax": {
+      "type": "integer",
+      "minimum": 2,
+      "multipleOf": 2
+    },
+    "pasMaxAxe": {
+      "type": "integer",
+      "minimum": 1
+    },
+    "coutInflechir": {
+      "type": "array",
+      "items": {
+        "type": "integer",
+        "minimum": 0
+      },
+      "minItems": 2,
+      "maxItems": 2
+    },
+    "ageVerrou": {
+      "type": "integer",
+      "minimum": 1
+    },
+    "forceSignal": {
+      "type": "integer",
+      "minimum": 1
+    },
+    "ptsSignalPrecoce": {
+      "type": "number",
+      "minimum": 0
+    },
+    "ptsSignalTardif": {
+      "type": "number",
+      "minimum": 0
+    },
+    "ptsRupture": {
+      "type": "number",
+      "minimum": 0
+    },
+    "ptsVisionPrincipal": {
+      "type": "number",
+      "minimum": 0
+    },
+    "ptsVisionSecondaire": {
+      "type": "number",
+      "minimum": 0
+    },
+    "ptsHeritage": {
+      "type": "number",
+      "minimum": 0
+    },
+    "rupturesLatentesMax": {
+      "type": "integer",
+      "minimum": 1
+    },
+    "facesDe": {
+      "type": "integer",
+      "minimum": 2
+    },
+    "placesParLecture": {
+      "type": "integer",
+      "minimum": 0,
+      "description": "nombre de paris acceptés par lecture d'un signal (0 = illimité)"
+    },
+    "seuilBascule": {
+      "type": "integer",
+      "minimum": 1,
+      "description": "distance au centre à partir de laquelle un axe ferme la voie opposée"
+    },
+    "chocSignal": {
+      "type": "integer",
+      "minimum": 0
+    }
   }
 }

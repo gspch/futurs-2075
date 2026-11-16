@@ -58,7 +58,7 @@ export interface Moteur {
   /** Futur probable : position de chaque axe en 2075 si rien ne change. */
   projection(e: Etat): number[];
   tension(e: Etat, carteRupture: number): number;
-  typeSociete(axes: number[]): number;
+  typeSociete(axes: number[], histoire?: number[][]): number;
   observer(e: Etat, j: number): Etat;
   verifier(e: Etat): string[];
   memeCoup(a: Coup, b: Coup): boolean;
@@ -73,6 +73,7 @@ export function creerMoteur(contenu: Contenu, params: Parametres): Moteur {
   const NA = C.axes.length;
   const centre = P.pisteMax / 2;
   const chocSignal = typeof P.chocSignal === 'number' ? (P.chocSignal as number) : 0;
+  const placesParLecture = typeof P.placesParLecture === 'number' ? (P.placesParLecture as number) : 0;
   const seuilBascule = typeof P.seuilBascule === 'number' ? (P.seuilBascule as number) : centre;
 
   const actionsParDecennie = (n: number) => P.actionsParDecennie[String(n)];
@@ -158,9 +159,11 @@ export function creerMoteur(contenu: Contenu, params: Parametres): Moteur {
     if (e.phase === 'veille') {
       if (j.attention > 0) {
         for (const s of e.horizon) {
-          let deja = false;
-          for (const p of s.paris) if (p.j === e.courant) { deja = true; break; }
-          if (!deja) { coups.push({ t: 'parier', uid: s.uid, lecture: 1 }); coups.push({ t: 'parier', uid: s.uid, lecture: 0 }); }
+          let deja = false, n1 = 0, n0 = 0;
+          for (const p of s.paris) { if (p.j === e.courant) { deja = true; break; } if (p.lecture === 1) n1++; else n0++; }
+          if (deja) continue;
+          if (placesParLecture === 0 || n1 < placesParLecture) coups.push({ t: 'parier', uid: s.uid, lecture: 1 });
+          if (placesParLecture === 0 || n0 < placesParLecture) coups.push({ t: 'parier', uid: s.uid, lecture: 0 });
         }
       }
       coups.push({ t: 'renoncer' });
@@ -465,11 +468,14 @@ export function creerMoteur(contenu: Contenu, params: Parametres): Moteur {
     return best;
   }
 
-  function typeSociete(axes: number[]): number {
-    let best = 0, bd = 1; // en deçà de 2 cases d'écart : équilibre
+  /** Type de société : le pôle le plus marqué en fin de partie ; à égalité, celui vers lequel le monde a penché le plus longtemps. */
+  function typeSociete(axes: number[], histoire?: number[][]): number {
+    let best = 0, bs = 199; // en deçà de 2 cases d'écart : équilibre
     for (let a = 0; a < NA; a++) {
-      const d = Math.abs(axes[a] - centre);
-      if (d > bd) { bd = d; best = 1 + a * 2 + (axes[a] > centre ? 1 : 0); }
+      const cote = axes[a] > centre ? 1 : 0;
+      let s = Math.abs(axes[a] - centre) * 100;
+      if (histoire) for (const h of histoire) if (h[a] !== centre && (h[a] > centre ? 1 : 0) === cote) s += Math.abs(h[a] - centre);
+      if (s > bs) { bs = s; best = 1 + a * 2 + cote; }
     }
     return best;
   }

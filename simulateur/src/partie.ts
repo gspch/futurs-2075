@@ -92,7 +92,7 @@ export function jouerPartie(m: Moteur, bots: Bot[], graine: number, opts: { gard
   evenements.neesDeSignaux = e.tendances.filter((t) => t.id >= ID_SIGNAL).length;
   const res: ResultatPartie = {
     nb, graine, bots: bots.map((b) => b.nom), scores: m.scores(e), gagnants: m.gagnants(e), nbCoups: e.nbCoups, decisions,
-    intermediaires, type: m.typeSociete(e.axes), cartes, compteCoups, evenements, axes: e.axes.slice(), c8,
+    intermediaires, type: m.typeSociete(e.axes, e.histoire), cartes, compteCoups, evenements, axes: e.axes.slice(), c8,
   };
   if (opts.garder) { res.coups = coups; res.journal = journalComplet; res.etatFinal = e; }
   return res;

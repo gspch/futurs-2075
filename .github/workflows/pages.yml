@@ -26,7 +26,10 @@ jobs:
       - uses: actions/upload-pages-artifact@v3
         with:
           path: web/dist
+  # L'environnement github-pages du dépôt n'accepte que la branche principale :
+  # sur les autres branches on vérifie seulement que le site se construit.
   deployer:
+    if: github.ref == 'refs/heads/main'
     needs: construire
     runs-on: ubuntu-latest
     environment:

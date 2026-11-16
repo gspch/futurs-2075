@@ -2,6 +2,7 @@
 // Elle ne lit que ce que le joueur a le droit de voir (les cartes inconnues valent -1).
 import type { Etat, SignalHorizon, Coup } from '../../moteur/src/types';
 import type { Moteur } from '../../moteur/src/moteur';
+import poidsJson from './poids.json';
 
 export interface Poids {
   /** poids des trois sources de points */
@@ -27,10 +28,8 @@ export interface Poids {
   bruit: number;
 }
 
-export const POIDS_DEFAUT: Poids = {
-  vision: 1, heritage: 1, anticipation: 1, signal: 1, rupture: 1, veille: 0.8, main: 0.25, attention: 0.15,
-  amorti: 0.75, blocage: 0, axe: -1, focus: 0, bruit: 0.05,
-};
+/** Poids de référence (le « glouton »), calibrés par recherche évolutionnaire : voir `npm run sim -- calibrer`. */
+export const POIDS_DEFAUT: Poids = poidsJson as Poids;
 
 const PRIOR_SIGNAL = 0.28;
 

@@ -1,0 +1,15 @@
+{
+ "vision": 1.09,
+ "heritage": 0.61,
+ "anticipation": 1.16,
+ "signal": 1.14,
+ "rupture": 1.24,
+ "veille": 1.16,
+ "main": 0.1,
+ "attention": 0.19,
+ "amorti": 0.77,
+ "blocage": 0.16,
+ "axe": -1,
+ "focus": 0,
+ "bruit": 0.05
+}

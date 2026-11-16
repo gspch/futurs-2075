@@ -1,23 +1,32 @@
 {
-  "version": "0.1",
+  "version": "0.2",
   "decennies": 5,
-  "actionsParDecennie": { "2": 4, "3": 3, "4": 3, "5": 2 },
+  "actionsParDecennie": {
+    "2": 4,
+    "3": 3,
+    "4": 3,
+    "5": 2
+  },
   "tailleMain": 5,
   "mainMax": 7,
   "piocheProspecter": 2,
-  "jetonsAttention": 5,
+  "jetonsAttention": 3,
   "signauxParDecennie": 3,
   "pisteMax": 10,
   "pasMaxAxe": 2,
-  "coutInflechir": [1, 2],
+  "coutInflechir": [
+    1,
+    2
+  ],
   "ageVerrou": 2,
   "forceSignal": 2,
   "ptsSignalPrecoce": 3,
   "ptsSignalTardif": 1,
-  "ptsRupture": 4,
+  "ptsRupture": 3,
   "ptsVisionPrincipal": 2,
   "ptsVisionSecondaire": 1,
   "ptsHeritage": 1,
   "rupturesLatentesMax": 2,
-  "facesDe": 6
+  "facesDe": 6,
+  "placesParLecture": 1
 }
