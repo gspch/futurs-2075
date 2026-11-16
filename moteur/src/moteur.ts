@@ -48,6 +48,9 @@ export interface Moteur {
   jouer(e: Etat, c: Coup, journal?: Evenement[]): Etat;
   /** Variante rapide qui modifie l'état fourni, sans vérifier la légalité (réservée aux simulations internes des bots). */
   jouerEnPlace(e: Etat, c: Coup, journal?: Evenement[]): void;
+  /** Effet direct d'un coup sur l'état fourni, sans passer la main ni déclencher de bilan (pour l'évaluation à un coup des bots). */
+  effet(e: Etat, c: Coup, journal?: Evenement[]): boolean;
+  installable(e: Etat, carte: number): boolean;
   scores(e: Etat): Score[];
   gagnants(e: Etat): number[];
   /** Force nette des tendances sur un axe (positive vers le pôle haut). */
@@ -70,6 +73,7 @@ export function creerMoteur(contenu: Contenu, params: Parametres): Moteur {
   const NA = C.axes.length;
   const centre = P.pisteMax / 2;
   const chocSignal = typeof P.chocSignal === 'number' ? (P.chocSignal as number) : 0;
+  const seuilBascule = typeof P.seuilBascule === 'number' ? (P.seuilBascule as number) : centre;
 
   const actionsParDecennie = (n: number) => P.actionsParDecennie[String(n)];
   const penche = (e: Etat, axe: number, pole: number) => (pole === 1 ? e.axes[axe] > centre : e.axes[axe] < centre);
@@ -316,7 +320,7 @@ export function creerMoteur(contenu: Contenu, params: Parametres): Moteur {
     // 4. Bascules : un axe en bout de piste ferme pour de bon la voie opposée.
     for (let a = 0; a < NA; a++) {
       const v = e.axes[a];
-      const ferme = v === P.pisteMax ? 0 : v === 0 ? 1 : -1;
+      const ferme = v - centre >= seuilBascule ? 0 : centre - v >= seuilBascule ? 1 : -1;
       if (ferme >= 0 && !e.fermees[a * 2 + ferme]) {
         e.fermees[a * 2 + ferme] = true;
         const morte = (c: number) => C.tendances[c].axe === a && C.tendances[c].pole === ferme;
@@ -353,17 +357,15 @@ export function creerMoteur(contenu: Contenu, params: Parametres): Moteur {
     e.phase = 'actions';
   }
 
-  function jouerEnPlace(e: Etat, c: Coup, journal?: Evenement[]): void {
+  /** Effet direct d'un coup, sans passer la main. Renvoie false si le joueur garde la main (vision, veille). */
+  function effet(e: Etat, c: Coup, journal?: Evenement[]): boolean {
     const jc = e.courant;
     const j = e.joueurs[jc];
-    e.nbCoups++;
     switch (c.t) {
       case 'vision': {
         j.vision = c.carte;
         journal?.push({ t: 'vision', j: jc });
-        if (jc + 1 < e.nbJoueurs) e.courant = jc + 1;
-        else debutDecennie(e, journal);
-        return;
+        return false;
       }
       case 'installer': {
         const carte = C.tendances[c.carte];
@@ -386,7 +388,7 @@ export function creerMoteur(contenu: Contenu, params: Parametres): Moteur {
         if (!j.connus.includes(c.uid)) j.connus.push(c.uid);
         journal?.push({ t: 'veiller', j: jc, uid: c.uid });
         e.phase = 'veille';
-        return;
+        return false;
       }
       case 'parier': {
         const s = e.horizon.find((x) => x.uid === c.uid)!;
@@ -415,7 +417,16 @@ export function creerMoteur(contenu: Contenu, params: Parametres): Moteur {
         journal?.push({ t: 'passer', j: jc });
         break;
     }
-    avancer(e, journal);
+    return true;
+  }
+
+  function jouerEnPlace(e: Etat, c: Coup, journal?: Evenement[]): void {
+    e.nbCoups++;
+    if (effet(e, c, journal)) { avancer(e, journal); return; }
+    if (c.t === 'vision') {
+      if (e.courant + 1 < e.nbJoueurs) e.courant++;
+      else debutDecennie(e, journal);
+    }
   }
 
   function jouer(e: Etat, c: Coup, journal?: Evenement[]): Etat {
@@ -517,5 +528,5 @@ export function creerMoteur(contenu: Contenu, params: Parametres): Moteur {
     return err;
   }
 
-  return { contenu: C, params: P, centre, creerPartie, coupsLegaux, jouer, jouerEnPlace, scores, gagnants, forceNette, projection, tension, typeSociete, observer, verifier, memeCoup, lectureSignal, titreTendance, actionsParDecennie };
+  return { contenu: C, params: P, centre, creerPartie, coupsLegaux, jouer, jouerEnPlace, effet, installable, scores, gagnants, forceNette, projection, tension, typeSociete, observer, verifier, memeCoup, lectureSignal, titreTendance, actionsParDecennie };
 }
