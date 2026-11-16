@@ -1,0 +1,26 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Contenu d'Aiguillages : axes, cartes, types de société",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["nom","axes","domaines","tendances","signaux","ruptures","visions","types"],
+  "definitions": {
+    "axe": { "type": "integer", "minimum": 0, "maximum": 3 },
+    "pole": { "type": "integer", "enum": [0, 1] },
+    "cible": { "type": "object", "additionalProperties": false, "required": ["axe","pole"], "properties": { "axe": { "$ref": "#/definitions/axe" }, "pole": { "$ref": "#/definitions/pole" } } },
+    "lecture": { "oneOf": [ { "type": "null" }, { "type": "object", "additionalProperties": false, "required": ["titre","axe","pole"], "properties": { "titre": { "type": "string", "minLength": 3, "maxLength": 60 }, "axe": { "$ref": "#/definitions/axe" }, "pole": { "$ref": "#/definitions/pole" } } } ] },
+    "titre": { "type": "string", "minLength": 3, "maxLength": 48 },
+    "texte": { "type": "string", "minLength": 10, "maxLength": 140 },
+    "domaine": { "type": "string", "enum": ["climat","démographie","technologie","gouvernance","économie","culture","santé","géopolitique"] }
+  },
+  "properties": {
+    "nom": { "type": "string" },
+    "axes": { "type": "array", "minItems": 4, "maxItems": 4, "items": { "type": "object", "additionalProperties": false, "required": ["id","nom","poles","question"], "properties": { "id": { "type": "string" }, "nom": { "type": "string" }, "question": { "type": "string" }, "poles": { "type": "array", "minItems": 2, "maxItems": 2, "items": { "type": "string" } } } } },
+    "domaines": { "type": "array", "items": { "$ref": "#/definitions/domaine" } },
+    "tendances": { "type": "array", "items": { "type": "object", "additionalProperties": false, "required": ["id","titre","texte","domaine","axe","pole","force"], "properties": { "id": { "type": "string", "pattern": "^T[0-9]{2}$" }, "titre": { "$ref": "#/definitions/titre" }, "texte": { "$ref": "#/definitions/texte" }, "domaine": { "$ref": "#/definitions/domaine" }, "axe": { "$ref": "#/definitions/axe" }, "pole": { "$ref": "#/definitions/pole" }, "force": { "type": "integer", "enum": [1, 2] }, "prerequis": { "$ref": "#/definitions/cible" } } } },
+    "signaux": { "type": "array", "items": { "type": "object", "additionalProperties": false, "required": ["id","titre","texte","domaine","condition","haut","bas"], "properties": { "id": { "type": "string", "pattern": "^S[0-9]{2}$" }, "titre": { "$ref": "#/definitions/titre" }, "texte": { "$ref": "#/definitions/texte" }, "domaine": { "$ref": "#/definitions/domaine" }, "condition": { "oneOf": [ { "type": "null" }, { "$ref": "#/definitions/axe" } ] }, "haut": { "$ref": "#/definitions/lecture" }, "bas": { "$ref": "#/definitions/lecture" } } } },
+    "ruptures": { "type": "array", "items": { "type": "object", "additionalProperties": false, "required": ["id","titre","texte","domaine","terrain","tensionMin","effets"], "properties": { "id": { "type": "string", "pattern": "^R[0-9]{2}$" }, "titre": { "$ref": "#/definitions/titre" }, "texte": { "$ref": "#/definitions/texte" }, "domaine": { "$ref": "#/definitions/domaine" }, "terrain": { "$ref": "#/definitions/cible" }, "tensionMin": { "type": "integer", "minimum": 0, "maximum": 3 }, "effets": { "type": "array", "minItems": 1, "items": { "oneOf": [ { "type": "object", "additionalProperties": false, "required": ["type","axe","pole","n"], "properties": { "type": { "enum": ["deplacer","purger"] }, "axe": { "$ref": "#/definitions/axe" }, "pole": { "$ref": "#/definitions/pole" }, "n": { "type": "integer", "minimum": 1, "maximum": 5 } } }, { "type": "object", "additionalProperties": false, "required": ["type"], "properties": { "type": { "enum": ["rebattre"] } } } ] } } } } },
+    "visions": { "type": "array", "items": { "type": "object", "additionalProperties": false, "required": ["id","titre","texte","principal","secondaire"], "properties": { "id": { "type": "string", "pattern": "^V[0-9]{2}$" }, "titre": { "$ref": "#/definitions/titre" }, "texte": { "$ref": "#/definitions/texte" }, "principal": { "$ref": "#/definitions/cible" }, "secondaire": { "$ref": "#/definitions/cible" } } } },
+    "types": { "type": "array", "minItems": 9, "maxItems": 9, "items": { "type": "object", "additionalProperties": false, "required": ["id","axe","pole","nom","texte"], "properties": { "id": { "type": "string" }, "axe": { "oneOf": [ { "type": "null" }, { "$ref": "#/definitions/axe" } ] }, "pole": { "oneOf": [ { "type": "null" }, { "$ref": "#/definitions/pole" } ] }, "nom": { "type": "string" }, "texte": { "type": "string" } } } }
+  }
+}

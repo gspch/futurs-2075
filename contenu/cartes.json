@@ -1,0 +1,1746 @@
+{
+ "nom": "Aiguillages",
+ "axes": [
+  {
+   "id": "matiere",
+   "nom": "Matière",
+   "poles": [
+    "Sobriété",
+    "Abondance"
+   ],
+   "question": "Vit-on de peu, ou de beaucoup ?"
+  },
+  {
+   "id": "technique",
+   "nom": "Technique",
+   "poles": [
+    "Outil",
+    "Automate"
+   ],
+   "question": "La technique reste-t-elle dans la main, ou agit-elle seule ?"
+  },
+  {
+   "id": "echelle",
+   "nom": "Échelle",
+   "poles": [
+    "Local",
+    "Global"
+   ],
+   "question": "Où se décide et s’organise la vie commune ?"
+  },
+  {
+   "id": "lien",
+   "nom": "Lien",
+   "poles": [
+    "Autonomie",
+    "Commun"
+   ],
+   "question": "Chacun pour soi, ou tous ensemble ?"
+  }
+ ],
+ "domaines": [
+  "climat",
+  "démographie",
+  "technologie",
+  "gouvernance",
+  "économie",
+  "culture",
+  "santé",
+  "géopolitique"
+ ],
+ "tendances": [
+  {
+   "id": "T01",
+   "titre": "Rénovation thermique généralisée",
+   "texte": "Chantier après chantier, les bâtiments consomment moins.",
+   "domaine": "climat",
+   "axe": 0,
+   "pole": 0,
+   "force": 1
+  },
+  {
+   "id": "T02",
+   "titre": "Assiettes plus végétales",
+   "texte": "L’alimentation se végétalise par petites touches, génération après génération.",
+   "domaine": "santé",
+   "axe": 0,
+   "pole": 0,
+   "force": 1
+  },
+  {
+   "id": "T03",
+   "titre": "Économie de la réparation",
+   "texte": "Réparer redevient plus courant que remplacer.",
+   "domaine": "économie",
+   "axe": 0,
+   "pole": 0,
+   "force": 1
+  },
+  {
+   "id": "T04",
+   "titre": "Mobilités lentes du quotidien",
+   "texte": "Marche, vélo, train : la vitesse cesse d’être la norme.",
+   "domaine": "culture",
+   "axe": 0,
+   "pole": 0,
+   "force": 1
+  },
+  {
+   "id": "T05",
+   "titre": "Plafonds d’usage des ressources",
+   "texte": "Eau, sols, matières : des limites d’usage entrent dans le droit.",
+   "domaine": "gouvernance",
+   "axe": 0,
+   "pole": 0,
+   "force": 1
+  },
+  {
+   "id": "T06",
+   "titre": "Villes compactes à faible empreinte",
+   "texte": "Des quartiers denses où tout est à portée de marche.",
+   "domaine": "démographie",
+   "axe": 0,
+   "pole": 0,
+   "force": 2,
+   "prerequis": {
+    "axe": 2,
+    "pole": 0
+   }
+  },
+  {
+   "id": "T07",
+   "titre": "Planification matérielle partagée",
+   "texte": "Les besoins en matières sont débattus et répartis collectivement.",
+   "domaine": "gouvernance",
+   "axe": 0,
+   "pole": 0,
+   "force": 2,
+   "prerequis": {
+    "axe": 3,
+    "pole": 1
+   }
+  },
+  {
+   "id": "T08",
+   "titre": "Électricité renouvelable bon marché",
+   "texte": "Solaire et éolien deviennent des sources d’électricité courantes et peu coûteuses.",
+   "domaine": "technologie",
+   "axe": 0,
+   "pole": 1,
+   "force": 1
+  },
+  {
+   "id": "T09",
+   "titre": "Dessalement à grande échelle",
+   "texte": "L’eau de mer devient une ressource ordinaire des littoraux arides.",
+   "domaine": "climat",
+   "axe": 0,
+   "pole": 1,
+   "force": 1
+  },
+  {
+   "id": "T10",
+   "titre": "Agriculture de précision",
+   "texte": "Capteurs et données ajustent chaque apport, parcelle par parcelle.",
+   "domaine": "technologie",
+   "axe": 0,
+   "pole": 1,
+   "force": 1
+  },
+  {
+   "id": "T11",
+   "titre": "Recyclage poussé des métaux",
+   "texte": "Les déchets d’hier deviennent les gisements de demain.",
+   "domaine": "économie",
+   "axe": 0,
+   "pole": 1,
+   "force": 1
+  },
+  {
+   "id": "T12",
+   "titre": "Stockage massif de l’énergie",
+   "texte": "Batteries, hydrogène, chaleur : l’énergie se met en réserve.",
+   "domaine": "technologie",
+   "axe": 0,
+   "pole": 1,
+   "force": 1
+  },
+  {
+   "id": "T13",
+   "titre": "Énergie pilotée par algorithmes",
+   "texte": "Des réseaux qui équilibrent seuls une production surabondante.",
+   "domaine": "technologie",
+   "axe": 0,
+   "pole": 1,
+   "force": 2,
+   "prerequis": {
+    "axe": 1,
+    "pole": 1
+   }
+  },
+  {
+   "id": "T14",
+   "titre": "Chaînes d’approvisionnement planétaires",
+   "texte": "Tout circule, partout, sans rupture de charge.",
+   "domaine": "géopolitique",
+   "axe": 0,
+   "pole": 1,
+   "force": 2,
+   "prerequis": {
+    "axe": 2,
+    "pole": 1
+   }
+  },
+  {
+   "id": "T15",
+   "titre": "Droit à la réparation",
+   "texte": "Les objets doivent pouvoir être ouverts, compris, réparés.",
+   "domaine": "gouvernance",
+   "axe": 1,
+   "pole": 0,
+   "force": 1
+  },
+  {
+   "id": "T16",
+   "titre": "Savoir-faire manuels revalorisés",
+   "texte": "Les métiers de la main regagnent du prestige.",
+   "domaine": "culture",
+   "axe": 1,
+   "pole": 0,
+   "force": 1
+  },
+  {
+   "id": "T17",
+   "titre": "Logiciels libres et sobres",
+   "texte": "Des outils numériques simples, lisibles et partagés.",
+   "domaine": "technologie",
+   "axe": 1,
+   "pole": 0,
+   "force": 1
+  },
+  {
+   "id": "T18",
+   "titre": "Déconnexion choisie",
+   "texte": "Des temps et des lieux sans écran s’installent dans les habitudes.",
+   "domaine": "santé",
+   "axe": 1,
+   "pole": 0,
+   "force": 1
+  },
+  {
+   "id": "T19",
+   "titre": "Low-tech enseignée",
+   "texte": "Concevoir simple et robuste devient une discipline à part entière.",
+   "domaine": "culture",
+   "axe": 1,
+   "pole": 0,
+   "force": 1
+  },
+  {
+   "id": "T20",
+   "titre": "Ateliers de fabrication de quartier",
+   "texte": "On produit et on répare à deux pas de chez soi.",
+   "domaine": "économie",
+   "axe": 1,
+   "pole": 0,
+   "force": 2,
+   "prerequis": {
+    "axe": 2,
+    "pole": 0
+   }
+  },
+  {
+   "id": "T21",
+   "titre": "Standards techniques durables",
+   "texte": "Des normes qui imposent des objets simples et faits pour durer.",
+   "domaine": "gouvernance",
+   "axe": 1,
+   "pole": 0,
+   "force": 2,
+   "prerequis": {
+    "axe": 0,
+    "pole": 0
+   }
+  },
+  {
+   "id": "T22",
+   "titre": "Assistants IA au travail",
+   "texte": "Chaque poste de travail se dote d’un copilote logiciel.",
+   "domaine": "technologie",
+   "axe": 1,
+   "pole": 1,
+   "force": 1
+  },
+  {
+   "id": "T23",
+   "titre": "Robots d’assistance aux aînés",
+   "texte": "Face au vieillissement, des machines épaulent les aidants.",
+   "domaine": "démographie",
+   "axe": 1,
+   "pole": 1,
+   "force": 1
+  },
+  {
+   "id": "T24",
+   "titre": "Flottes de véhicules autonomes",
+   "texte": "Le transport se passe peu à peu de conducteur.",
+   "domaine": "technologie",
+   "axe": 1,
+   "pole": 1,
+   "force": 1
+  },
+  {
+   "id": "T25",
+   "titre": "Diagnostic médical automatisé",
+   "texte": "Les algorithmes lisent images et analyses en première ligne.",
+   "domaine": "santé",
+   "axe": 1,
+   "pole": 1,
+   "force": 1
+  },
+  {
+   "id": "T26",
+   "titre": "Administration par algorithmes",
+   "texte": "Les démarches courantes sont instruites par des systèmes automatiques.",
+   "domaine": "gouvernance",
+   "axe": 1,
+   "pole": 1,
+   "force": 1
+  },
+  {
+   "id": "T27",
+   "titre": "Usines sans opérateurs",
+   "texte": "Des sites de production qui tournent dans le noir.",
+   "domaine": "économie",
+   "axe": 1,
+   "pole": 1,
+   "force": 2,
+   "prerequis": {
+    "axe": 0,
+    "pole": 1
+   }
+  },
+  {
+   "id": "T28",
+   "titre": "Infrastructures mondiales de calcul",
+   "texte": "De grands centres de données irriguent tous les continents.",
+   "domaine": "géopolitique",
+   "axe": 1,
+   "pole": 1,
+   "force": 2,
+   "prerequis": {
+    "axe": 2,
+    "pole": 1
+   }
+  },
+  {
+   "id": "T29",
+   "titre": "Circuits courts alimentaires",
+   "texte": "Du champ à l’assiette, moins d’intermédiaires et moins de kilomètres.",
+   "domaine": "économie",
+   "axe": 2,
+   "pole": 0,
+   "force": 1
+  },
+  {
+   "id": "T30",
+   "titre": "Monnaies locales complémentaires",
+   "texte": "Des monnaies qui ne circulent que sur un territoire.",
+   "domaine": "économie",
+   "axe": 2,
+   "pole": 0,
+   "force": 1
+  },
+  {
+   "id": "T31",
+   "titre": "Pouvoirs accrus des villes et régions",
+   "texte": "Les décisions descendent d’un étage.",
+   "domaine": "gouvernance",
+   "axe": 2,
+   "pole": 0,
+   "force": 1
+  },
+  {
+   "id": "T32",
+   "titre": "Énergie gérée par les habitants",
+   "texte": "Des coopératives locales produisent et distribuent leur électricité.",
+   "domaine": "climat",
+   "axe": 2,
+   "pole": 0,
+   "force": 1
+  },
+  {
+   "id": "T33",
+   "titre": "Relocalisation de productions essentielles",
+   "texte": "Médicaments, composants, denrées : produire plus près pour dépendre moins.",
+   "domaine": "géopolitique",
+   "axe": 2,
+   "pole": 0,
+   "force": 1
+  },
+  {
+   "id": "T34",
+   "titre": "Biorégions comme cadre de décision",
+   "texte": "On s’organise à l’échelle d’un bassin-versant plutôt que d’une frontière.",
+   "domaine": "gouvernance",
+   "axe": 2,
+   "pole": 0,
+   "force": 2,
+   "prerequis": {
+    "axe": 0,
+    "pole": 0
+   }
+  },
+  {
+   "id": "T35",
+   "titre": "Fédérations de quartiers",
+   "texte": "Des voisinages qui se gouvernent et s’allient entre eux.",
+   "domaine": "culture",
+   "axe": 2,
+   "pole": 0,
+   "force": 2,
+   "prerequis": {
+    "axe": 3,
+    "pole": 1
+   }
+  },
+  {
+   "id": "T36",
+   "titre": "Normes internationales harmonisées",
+   "texte": "Un même standard, d’un continent à l’autre.",
+   "domaine": "gouvernance",
+   "axe": 2,
+   "pole": 1,
+   "force": 1
+  },
+  {
+   "id": "T37",
+   "titre": "Mégapoles connectées",
+   "texte": "Les grandes villes pèsent plus et se ressemblent davantage.",
+   "domaine": "démographie",
+   "axe": 2,
+   "pole": 1,
+   "force": 1
+  },
+  {
+   "id": "T38",
+   "titre": "Migrations de travail organisées",
+   "texte": "Des accords encadrent la circulation des travailleurs entre régions du monde.",
+   "domaine": "démographie",
+   "axe": 2,
+   "pole": 1,
+   "force": 1
+  },
+  {
+   "id": "T39",
+   "titre": "Plateformes sans frontières",
+   "texte": "Services, travail et culture s’échangent sur des places de marché mondiales.",
+   "domaine": "économie",
+   "axe": 2,
+   "pole": 1,
+   "force": 1
+  },
+  {
+   "id": "T40",
+   "titre": "Veille sanitaire mondiale",
+   "texte": "Les alertes épidémiques sont partagées en temps réel entre pays.",
+   "domaine": "santé",
+   "axe": 2,
+   "pole": 1,
+   "force": 1
+  },
+  {
+   "id": "T41",
+   "titre": "Gouvernance mondiale des biens communs",
+   "texte": "Océans, climat, orbites : des institutions planétaires prennent la main.",
+   "domaine": "géopolitique",
+   "axe": 2,
+   "pole": 1,
+   "force": 2,
+   "prerequis": {
+    "axe": 3,
+    "pole": 1
+   }
+  },
+  {
+   "id": "T42",
+   "titre": "Marché mondial automatisé",
+   "texte": "Les échanges internationaux sont négociés de machine à machine.",
+   "domaine": "économie",
+   "axe": 2,
+   "pole": 1,
+   "force": 2,
+   "prerequis": {
+    "axe": 1,
+    "pole": 1
+   }
+  },
+  {
+   "id": "T43",
+   "titre": "Travail indépendant généralisé",
+   "texte": "Chacun devient sa propre petite entreprise.",
+   "domaine": "économie",
+   "axe": 3,
+   "pole": 0,
+   "force": 1
+  },
+  {
+   "id": "T44",
+   "titre": "Formation à la carte",
+   "texte": "Des parcours d’apprentissage que chacun compose seul, tout au long de la vie.",
+   "domaine": "culture",
+   "axe": 3,
+   "pole": 0,
+   "force": 1
+  },
+  {
+   "id": "T45",
+   "titre": "Habitat en solo",
+   "texte": "Vivre seul devient une étape longue et ordinaire de l’existence.",
+   "domaine": "démographie",
+   "axe": 3,
+   "pole": 0,
+   "force": 1
+  },
+  {
+   "id": "T46",
+   "titre": "Santé personnalisée",
+   "texte": "Prévention et traitements s’ajustent au profil de chacun.",
+   "domaine": "santé",
+   "axe": 3,
+   "pole": 0,
+   "force": 1
+  },
+  {
+   "id": "T47",
+   "titre": "Identités choisies",
+   "texte": "On se définit moins par ses appartenances héritées que par ses choix.",
+   "domaine": "culture",
+   "axe": 3,
+   "pole": 0,
+   "force": 1
+  },
+  {
+   "id": "T48",
+   "titre": "Droits sociaux attachés à la personne",
+   "texte": "Des comptes individuels qui suivent chacun d’un pays et d’un emploi à l’autre.",
+   "domaine": "gouvernance",
+   "axe": 3,
+   "pole": 0,
+   "force": 2,
+   "prerequis": {
+    "axe": 2,
+    "pole": 1
+   }
+  },
+  {
+   "id": "T49",
+   "titre": "Foyers autosuffisants",
+   "texte": "Énergie, eau, objets : la maison produit ce qu’elle consomme.",
+   "domaine": "technologie",
+   "axe": 3,
+   "pole": 0,
+   "force": 2,
+   "prerequis": {
+    "axe": 0,
+    "pole": 1
+   }
+  },
+  {
+   "id": "T50",
+   "titre": "Habitat partagé entre générations",
+   "texte": "On mutualise les espaces, les services et l’attention aux autres.",
+   "domaine": "démographie",
+   "axe": 3,
+   "pole": 1,
+   "force": 1
+  },
+  {
+   "id": "T51",
+   "titre": "Essor des coopératives",
+   "texte": "Des entreprises possédées par celles et ceux qui y travaillent.",
+   "domaine": "économie",
+   "axe": 3,
+   "pole": 1,
+   "force": 1
+  },
+  {
+   "id": "T52",
+   "titre": "Budgets participatifs",
+   "texte": "Une part des dépenses publiques est décidée directement par les habitants.",
+   "domaine": "gouvernance",
+   "axe": 3,
+   "pole": 1,
+   "force": 1
+  },
+  {
+   "id": "T53",
+   "titre": "Soins de proximité mutualisés",
+   "texte": "Des maisons de santé où les professions travaillent ensemble.",
+   "domaine": "santé",
+   "axe": 3,
+   "pole": 1,
+   "force": 1
+  },
+  {
+   "id": "T54",
+   "titre": "Communs numériques",
+   "texte": "Des savoirs et des outils en ligne entretenus par leurs usagers.",
+   "domaine": "technologie",
+   "axe": 3,
+   "pole": 1,
+   "force": 1
+  },
+  {
+   "id": "T55",
+   "titre": "Conventions citoyennes permanentes",
+   "texte": "Des assemblées tirées au sort deviennent une institution ordinaire.",
+   "domaine": "gouvernance",
+   "axe": 3,
+   "pole": 1,
+   "force": 2,
+   "prerequis": {
+    "axe": 2,
+    "pole": 0
+   }
+  },
+  {
+   "id": "T56",
+   "titre": "Temps de travail partagé",
+   "texte": "Les gains de productivité sont convertis en temps libre pour tous.",
+   "domaine": "économie",
+   "axe": 3,
+   "pole": 1,
+   "force": 2,
+   "prerequis": {
+    "axe": 1,
+    "pole": 1
+   }
+  }
+ ],
+ "signaux": [
+  {
+   "id": "S01",
+   "titre": "Semaines de quatre jours",
+   "texte": "Des entreprises testent une semaine de travail raccourcie.",
+   "domaine": "économie",
+   "condition": 1,
+   "haut": {
+    "titre": "Temps libéré pour le collectif",
+    "axe": 3,
+    "pole": 1
+   },
+   "bas": {
+    "titre": "Pluriactivité individuelle",
+    "axe": 3,
+    "pole": 0
+   }
+  },
+  {
+   "id": "S02",
+   "titre": "Viande cultivée",
+   "texte": "Des protéines produites hors de l’élevage arrivent en dégustation.",
+   "domaine": "technologie",
+   "condition": 2,
+   "haut": {
+    "titre": "Protéines industrielles mondialisées",
+    "axe": 0,
+    "pole": 1
+   },
+   "bas": {
+    "titre": "Retour aux protéines végétales de pays",
+    "axe": 0,
+    "pole": 0
+   }
+  },
+  {
+   "id": "S03",
+   "titre": "Monnaies numériques publiques",
+   "texte": "Des banques centrales expérimentent leur propre monnaie numérique.",
+   "domaine": "gouvernance",
+   "condition": 3,
+   "haut": {
+    "titre": "Monnaie commune programmable",
+    "axe": 2,
+    "pole": 1
+   },
+   "bas": {
+    "titre": "Portefeuilles privés et monnaies de niche",
+    "axe": 2,
+    "pole": 0
+   }
+  },
+  {
+   "id": "S04",
+   "titre": "Implants neuronaux hors du soin",
+   "texte": "Des interfaces cerveau-machine sortent du cadre médical.",
+   "domaine": "santé",
+   "condition": 3,
+   "haut": {
+    "titre": "Neurotechnologies encadrées par la loi",
+    "axe": 1,
+    "pole": 0
+   },
+   "bas": {
+    "titre": "Course à l’augmentation individuelle",
+    "axe": 1,
+    "pole": 1
+   }
+  },
+  {
+   "id": "S05",
+   "titre": "Villages de retraités autogérés",
+   "texte": "Des aînés s’organisent entre eux pour vieillir ensemble.",
+   "domaine": "démographie",
+   "condition": 0,
+   "haut": {
+    "titre": "Marché des services aux seniors",
+    "axe": 3,
+    "pole": 0
+   },
+   "bas": {
+    "titre": "Entraide entre générations",
+    "axe": 3,
+    "pole": 1
+   }
+  },
+  {
+   "id": "S06",
+   "titre": "Essais de géo-ingénierie solaire",
+   "texte": "De petites expériences de modification du rayonnement solaire font débat.",
+   "domaine": "climat",
+   "condition": 2,
+   "haut": {
+    "titre": "Thermostat planétaire négocié",
+    "axe": 0,
+    "pole": 1
+   },
+   "bas": {
+    "titre": "Moratoire et adaptation de terrain",
+    "axe": 0,
+    "pole": 0
+   }
+  },
+  {
+   "id": "S07",
+   "titre": "Droits de la nature devant les tribunaux",
+   "texte": "Des fleuves et des forêts obtiennent une personnalité juridique.",
+   "domaine": "gouvernance",
+   "condition": 3,
+   "haut": {
+    "titre": "Écosystèmes sujets de droit",
+    "axe": 0,
+    "pole": 0
+   },
+   "bas": {
+    "titre": "Marchés de droits environnementaux",
+    "axe": 0,
+    "pole": 1
+   }
+  },
+  {
+   "id": "S08",
+   "titre": "Jumeaux numériques de villes",
+   "texte": "Des municipalités simulent leur territoire dans un modèle informatique.",
+   "domaine": "technologie",
+   "condition": 0,
+   "haut": {
+    "titre": "Villes optimisées en temps réel",
+    "axe": 1,
+    "pole": 1
+   },
+   "bas": {
+    "titre": "Diagnostics urbains frugaux",
+    "axe": 1,
+    "pole": 0
+   }
+  },
+  {
+   "id": "S09",
+   "titre": "Départs des métropoles",
+   "texte": "Des actifs quittent les grandes villes en gardant leur emploi à distance.",
+   "domaine": "démographie",
+   "condition": 1,
+   "haut": {
+    "titre": "Nomades connectés au monde entier",
+    "axe": 2,
+    "pole": 1
+   },
+   "bas": {
+    "titre": "Renaissance des bourgs",
+    "axe": 2,
+    "pole": 0
+   }
+  },
+  {
+   "id": "S10",
+   "titre": "Assemblées citoyennes tirées au sort",
+   "texte": "Des panels de citoyens délibèrent sur des sujets difficiles.",
+   "domaine": "gouvernance",
+   "condition": 2,
+   "haut": {
+    "titre": "Assemblée citoyenne mondiale",
+    "axe": 3,
+    "pole": 1
+   },
+   "bas": {
+    "titre": "Démocratie de voisinage sans écran",
+    "axe": 1,
+    "pole": 0
+   }
+  },
+  {
+   "id": "S11",
+   "titre": "Impression 3D de pièces critiques",
+   "texte": "Des pièces de rechange sont fabriquées à la demande, sur place.",
+   "domaine": "économie",
+   "condition": 2,
+   "haut": {
+    "titre": "Usines mondiales à la demande",
+    "axe": 1,
+    "pole": 1
+   },
+   "bas": {
+    "titre": "Micro-usines de territoire",
+    "axe": 1,
+    "pole": 0
+   }
+  },
+  {
+   "id": "S12",
+   "titre": "Pénuries ponctuelles de médicaments",
+   "texte": "Des ruptures de stock répétées inquiètent soignants et patients.",
+   "domaine": "santé",
+   "condition": 3,
+   "haut": {
+    "titre": "Production pharmaceutique mutualisée entre pays",
+    "axe": 2,
+    "pole": 1
+   },
+   "bas": {
+    "titre": "Préparations en officines de proximité",
+    "axe": 2,
+    "pole": 0
+   }
+  },
+  {
+   "id": "S13",
+   "titre": "Clubs de pays pour le climat",
+   "texte": "Quelques États alignent leurs règles commerciales et climatiques.",
+   "domaine": "géopolitique",
+   "condition": 0,
+   "haut": {
+    "titre": "Blocs commerciaux bas-carbone",
+    "axe": 2,
+    "pole": 1
+   },
+   "bas": {
+    "titre": "Souverainetés de ressources",
+    "axe": 2,
+    "pole": 0
+   }
+  },
+  {
+   "id": "S14",
+   "titre": "Tutorat scolaire par IA",
+   "texte": "Des élèves révisent avec un assistant conversationnel.",
+   "domaine": "culture",
+   "condition": 1,
+   "haut": {
+    "titre": "Parcours scolaires individualisés",
+    "axe": 3,
+    "pole": 0
+   },
+   "bas": {
+    "titre": "Écoles communautaires de quartier",
+    "axe": 3,
+    "pole": 1
+   }
+  },
+  {
+   "id": "S15",
+   "titre": "Jardins partagés en vogue",
+   "texte": "Les listes d’attente s’allongent pour une parcelle à cultiver.",
+   "domaine": "culture",
+   "condition": 0,
+   "haut": null,
+   "bas": {
+    "titre": "Autoproduction alimentaire de quartier",
+    "axe": 2,
+    "pole": 0
+   }
+  },
+  {
+   "id": "S16",
+   "titre": "Petits réacteurs modulaires",
+   "texte": "Des prototypes de réacteurs nucléaires compacts sont annoncés.",
+   "domaine": "technologie",
+   "condition": 1,
+   "haut": {
+    "titre": "Parc de petits réacteurs",
+    "axe": 0,
+    "pole": 1
+   },
+   "bas": null
+  },
+  {
+   "id": "S17",
+   "titre": "Fatigue numérique",
+   "texte": "Des jeunes adultes disent saturer des écrans et des notifications.",
+   "domaine": "santé",
+   "condition": 1,
+   "haut": {
+    "titre": "Mouvement de déconnexion",
+    "axe": 1,
+    "pole": 0
+   },
+   "bas": null
+  },
+  {
+   "id": "S18",
+   "titre": "Statut pour les déplacés climatiques",
+   "texte": "Quelques pays ouvrent des voies d’accueil liées au climat.",
+   "domaine": "géopolitique",
+   "condition": 2,
+   "haut": {
+    "titre": "Protection internationale des déplacés",
+    "axe": 3,
+    "pole": 1
+   },
+   "bas": null
+  },
+  {
+   "id": "S19",
+   "titre": "Revenus de base expérimentaux",
+   "texte": "Des territoires testent un revenu versé sans condition.",
+   "domaine": "économie",
+   "condition": 1,
+   "haut": {
+    "titre": "Revenu socle individuel",
+    "axe": 3,
+    "pole": 0
+   },
+   "bas": null
+  },
+  {
+   "id": "S20",
+   "titre": "Exploration minière des grands fonds",
+   "texte": "Des permis d’exploration sont délivrés en haute mer.",
+   "domaine": "géopolitique",
+   "condition": 2,
+   "haut": {
+    "titre": "Exploitation des fonds marins",
+    "axe": 0,
+    "pole": 1
+   },
+   "bas": null
+  },
+  {
+   "id": "S21",
+   "titre": "Communautés hors réseau",
+   "texte": "Des groupes choisissent de vivre débranchés des grands réseaux.",
+   "domaine": "culture",
+   "condition": 3,
+   "haut": null,
+   "bas": {
+    "titre": "Autonomie technique des foyers",
+    "axe": 1,
+    "pole": 0
+   }
+  },
+  {
+   "id": "S22",
+   "titre": "Classes qui ferment",
+   "texte": "Faute d’enfants, des écoles regroupent leurs effectifs.",
+   "domaine": "démographie",
+   "condition": 3,
+   "haut": null,
+   "bas": {
+    "titre": "Machines au service de sociétés vieillissantes",
+    "axe": 1,
+    "pole": 1
+   }
+  },
+  {
+   "id": "S23",
+   "titre": "Résidences numériques",
+   "texte": "Des territoires proposent un statut de résident à distance.",
+   "domaine": "gouvernance",
+   "condition": 3,
+   "haut": null,
+   "bas": {
+    "titre": "Citoyennetés à la carte",
+    "axe": 2,
+    "pole": 1
+   }
+  },
+  {
+   "id": "S24",
+   "titre": "Renoncements volontaires à l’avion",
+   "texte": "Des voyageurs s’engagent publiquement à moins voler.",
+   "domaine": "climat",
+   "condition": 0,
+   "haut": null,
+   "bas": {
+    "titre": "Sobriété devenue norme sociale",
+    "axe": 3,
+    "pole": 1
+   }
+  },
+  {
+   "id": "S25",
+   "titre": "Taxis volants urbains",
+   "texte": "Des démonstrations spectaculaires survolent quelques centres-villes.",
+   "domaine": "technologie",
+   "condition": null,
+   "haut": null,
+   "bas": null
+  },
+  {
+   "id": "S26",
+   "titre": "Cités flottantes",
+   "texte": "Des maquettes de villes sur l’eau circulent dans les salons.",
+   "domaine": "climat",
+   "condition": null,
+   "haut": null,
+   "bas": null
+  },
+  {
+   "id": "S27",
+   "titre": "Vie sociale en mondes virtuels",
+   "texte": "Des univers en ligne promettent de remplacer les lieux de rencontre.",
+   "domaine": "culture",
+   "condition": null,
+   "haut": null,
+   "bas": null
+  },
+  {
+   "id": "S28",
+   "titre": "Tourisme spatial de masse",
+   "texte": "Quelques vols suborbitaux font rêver d’un marché grand public.",
+   "domaine": "économie",
+   "condition": null,
+   "haut": null,
+   "bas": null
+  }
+ ],
+ "ruptures": [
+  {
+   "id": "R01",
+   "titre": "Révolte contre les restrictions",
+   "texte": "Lassées des limites, des populations exigent le retour de l’aisance matérielle.",
+   "domaine": "gouvernance",
+   "terrain": {
+    "axe": 0,
+    "pole": 0
+   },
+   "tensionMin": 0,
+   "effets": [
+    {
+     "type": "deplacer",
+     "axe": 0,
+     "pole": 1,
+     "n": 3
+    },
+    {
+     "type": "purger",
+     "axe": 0,
+     "pole": 0,
+     "n": 2
+    }
+   ]
+  },
+  {
+   "id": "R02",
+   "titre": "Percée énergétique inattendue",
+   "texte": "Une source d’énergie nouvelle rend caducs des décennies d’efforts d’économie.",
+   "domaine": "technologie",
+   "terrain": {
+    "axe": 0,
+    "pole": 0
+   },
+   "tensionMin": 1,
+   "effets": [
+    {
+     "type": "deplacer",
+     "axe": 0,
+     "pole": 1,
+     "n": 2
+    },
+    {
+     "type": "deplacer",
+     "axe": 1,
+     "pole": 1,
+     "n": 1
+    },
+    {
+     "type": "purger",
+     "axe": 0,
+     "pole": 0,
+     "n": 1
+    }
+   ]
+  },
+  {
+   "id": "R03",
+   "titre": "Épuisement d’une ressource critique",
+   "texte": "Un matériau dont tout dépend vient à manquer, partout, en même temps.",
+   "domaine": "économie",
+   "terrain": {
+    "axe": 0,
+    "pole": 1
+   },
+   "tensionMin": 0,
+   "effets": [
+    {
+     "type": "deplacer",
+     "axe": 0,
+     "pole": 0,
+     "n": 3
+    },
+    {
+     "type": "purger",
+     "axe": 0,
+     "pole": 1,
+     "n": 2
+    }
+   ]
+  },
+  {
+   "id": "R04",
+   "titre": "Emballement climatique régional",
+   "texte": "Une région entière bascule dans un régime climatique inédit.",
+   "domaine": "climat",
+   "terrain": {
+    "axe": 0,
+    "pole": 1
+   },
+   "tensionMin": 1,
+   "effets": [
+    {
+     "type": "deplacer",
+     "axe": 0,
+     "pole": 0,
+     "n": 2
+    },
+    {
+     "type": "deplacer",
+     "axe": 2,
+     "pole": 0,
+     "n": 1
+    },
+    {
+     "type": "purger",
+     "axe": 0,
+     "pole": 1,
+     "n": 1
+    }
+   ]
+  },
+  {
+   "id": "R05",
+   "titre": "Décrochage technologique",
+   "texte": "Ceux qui ont misé sur la simplicité se découvrent dépendants des autres.",
+   "domaine": "géopolitique",
+   "terrain": {
+    "axe": 1,
+    "pole": 0
+   },
+   "tensionMin": 0,
+   "effets": [
+    {
+     "type": "deplacer",
+     "axe": 1,
+     "pole": 1,
+     "n": 3
+    },
+    {
+     "type": "purger",
+     "axe": 1,
+     "pole": 0,
+     "n": 2
+    }
+   ]
+  },
+  {
+   "id": "R06",
+   "titre": "Découverte majeure par une machine",
+   "texte": "Un système automatique résout un problème jugé hors de portée.",
+   "domaine": "technologie",
+   "terrain": {
+    "axe": 1,
+    "pole": 0
+   },
+   "tensionMin": 1,
+   "effets": [
+    {
+     "type": "deplacer",
+     "axe": 1,
+     "pole": 1,
+     "n": 2
+    },
+    {
+     "type": "deplacer",
+     "axe": 0,
+     "pole": 1,
+     "n": 1
+    },
+    {
+     "type": "purger",
+     "axe": 1,
+     "pole": 0,
+     "n": 1
+    }
+   ]
+  },
+  {
+   "id": "R07",
+   "titre": "Panne systémique des réseaux",
+   "texte": "Une défaillance en cascade paralyse les systèmes automatisés.",
+   "domaine": "technologie",
+   "terrain": {
+    "axe": 1,
+    "pole": 1
+   },
+   "tensionMin": 0,
+   "effets": [
+    {
+     "type": "deplacer",
+     "axe": 1,
+     "pole": 0,
+     "n": 3
+    },
+    {
+     "type": "purger",
+     "axe": 1,
+     "pole": 1,
+     "n": 2
+    }
+   ]
+  },
+  {
+   "id": "R08",
+   "titre": "Krach algorithmique",
+   "texte": "Des automates financiers s’emballent ; la confiance dans les machines s’effondre.",
+   "domaine": "économie",
+   "terrain": {
+    "axe": 1,
+    "pole": 1
+   },
+   "tensionMin": 1,
+   "effets": [
+    {
+     "type": "deplacer",
+     "axe": 1,
+     "pole": 0,
+     "n": 2
+    },
+    {
+     "type": "deplacer",
+     "axe": 2,
+     "pole": 0,
+     "n": 1
+    },
+    {
+     "type": "rebattre"
+    }
+   ]
+  },
+  {
+   "id": "R09",
+   "titre": "Catastrophe hors d’échelle",
+   "texte": "Un désastre dépasse de loin les moyens de chaque territoire isolé.",
+   "domaine": "climat",
+   "terrain": {
+    "axe": 2,
+    "pole": 0
+   },
+   "tensionMin": 0,
+   "effets": [
+    {
+     "type": "deplacer",
+     "axe": 2,
+     "pole": 1,
+     "n": 3
+    },
+    {
+     "type": "purger",
+     "axe": 2,
+     "pole": 0,
+     "n": 2
+    }
+   ]
+  },
+  {
+   "id": "R10",
+   "titre": "Grand exode",
+   "texte": "Des déplacements massifs de population obligent à coopérer au-delà des frontières.",
+   "domaine": "démographie",
+   "terrain": {
+    "axe": 2,
+    "pole": 0
+   },
+   "tensionMin": 1,
+   "effets": [
+    {
+     "type": "deplacer",
+     "axe": 2,
+     "pole": 1,
+     "n": 2
+    },
+    {
+     "type": "deplacer",
+     "axe": 3,
+     "pole": 1,
+     "n": 1
+    },
+    {
+     "type": "purger",
+     "axe": 2,
+     "pole": 0,
+     "n": 1
+    }
+   ]
+  },
+  {
+   "id": "R11",
+   "titre": "Grande pandémie",
+   "texte": "Un agent pathogène circule à la vitesse des échanges mondiaux.",
+   "domaine": "santé",
+   "terrain": {
+    "axe": 2,
+    "pole": 1
+   },
+   "tensionMin": 0,
+   "effets": [
+    {
+     "type": "deplacer",
+     "axe": 2,
+     "pole": 0,
+     "n": 3
+    },
+    {
+     "type": "purger",
+     "axe": 2,
+     "pole": 1,
+     "n": 2
+    }
+   ]
+  },
+  {
+   "id": "R12",
+   "titre": "Fragmentation en blocs",
+   "texte": "Les échanges mondiaux se brisent le long de lignes de rivalité.",
+   "domaine": "géopolitique",
+   "terrain": {
+    "axe": 2,
+    "pole": 1
+   },
+   "tensionMin": 1,
+   "effets": [
+    {
+     "type": "deplacer",
+     "axe": 2,
+     "pole": 0,
+     "n": 2
+    },
+    {
+     "type": "deplacer",
+     "axe": 0,
+     "pole": 0,
+     "n": 1
+    },
+    {
+     "type": "purger",
+     "axe": 2,
+     "pole": 1,
+     "n": 1
+    }
+   ]
+  },
+  {
+   "id": "R13",
+   "titre": "Crise de confiance généralisée",
+   "texte": "Plus personne ne croit personne : la solitude devient un problème public.",
+   "domaine": "culture",
+   "terrain": {
+    "axe": 3,
+    "pole": 0
+   },
+   "tensionMin": 0,
+   "effets": [
+    {
+     "type": "deplacer",
+     "axe": 3,
+     "pole": 1,
+     "n": 3
+    },
+    {
+     "type": "purger",
+     "axe": 3,
+     "pole": 0,
+     "n": 2
+    }
+   ]
+  },
+  {
+   "id": "R14",
+   "titre": "Faillite des protections individuelles",
+   "texte": "Les assurances de chacun ne couvrent plus les risques de tous.",
+   "domaine": "économie",
+   "terrain": {
+    "axe": 3,
+    "pole": 0
+   },
+   "tensionMin": 1,
+   "effets": [
+    {
+     "type": "deplacer",
+     "axe": 3,
+     "pole": 1,
+     "n": 2
+    },
+    {
+     "type": "deplacer",
+     "axe": 2,
+     "pole": 0,
+     "n": 1
+    },
+    {
+     "type": "purger",
+     "axe": 3,
+     "pole": 0,
+     "n": 1
+    }
+   ]
+  },
+  {
+   "id": "R15",
+   "titre": "Soulèvement contre le conformisme",
+   "texte": "Une génération rejette le poids du groupe et réclame de vivre à sa guise.",
+   "domaine": "culture",
+   "terrain": {
+    "axe": 3,
+    "pole": 1
+   },
+   "tensionMin": 0,
+   "effets": [
+    {
+     "type": "deplacer",
+     "axe": 3,
+     "pole": 0,
+     "n": 3
+    },
+    {
+     "type": "purger",
+     "axe": 3,
+     "pole": 1,
+     "n": 2
+    }
+   ]
+  },
+  {
+   "id": "R16",
+   "titre": "Paralysie des institutions collectives",
+   "texte": "À force de tout décider ensemble, plus rien ne se décide.",
+   "domaine": "gouvernance",
+   "terrain": {
+    "axe": 3,
+    "pole": 1
+   },
+   "tensionMin": 1,
+   "effets": [
+    {
+     "type": "deplacer",
+     "axe": 3,
+     "pole": 0,
+     "n": 2
+    },
+    {
+     "type": "deplacer",
+     "axe": 1,
+     "pole": 1,
+     "n": 1
+    },
+    {
+     "type": "rebattre"
+    }
+   ]
+  }
+ ],
+ "visions": [
+  {
+   "id": "V01",
+   "titre": "Les Territoires frugaux",
+   "texte": "Des pays sobres, organisés à hauteur de bassin de vie.",
+   "principal": {
+    "axe": 0,
+    "pole": 0
+   },
+   "secondaire": {
+    "axe": 2,
+    "pole": 0
+   }
+  },
+  {
+   "id": "V02",
+   "titre": "La Sobriété partagée",
+   "texte": "Peu de choses, mais décidées et réparties ensemble.",
+   "principal": {
+    "axe": 0,
+    "pole": 0
+   },
+   "secondaire": {
+    "axe": 3,
+    "pole": 1
+   }
+  },
+  {
+   "id": "V03",
+   "titre": "La Corne d’abondance",
+   "texte": "Des machines qui produisent assez pour tous.",
+   "principal": {
+    "axe": 0,
+    "pole": 1
+   },
+   "secondaire": {
+    "axe": 1,
+    "pole": 1
+   }
+  },
+  {
+   "id": "V04",
+   "titre": "La Prospérité planétaire",
+   "texte": "Un monde ouvert où les ressources circulent sans entrave.",
+   "principal": {
+    "axe": 0,
+    "pole": 1
+   },
+   "secondaire": {
+    "axe": 2,
+    "pole": 1
+   }
+  },
+  {
+   "id": "V05",
+   "titre": "Les Mains libres",
+   "texte": "Des outils simples au service de vies indépendantes.",
+   "principal": {
+    "axe": 1,
+    "pole": 0
+   },
+   "secondaire": {
+    "axe": 3,
+    "pole": 0
+   }
+  },
+  {
+   "id": "V06",
+   "titre": "L’Atelier sobre",
+   "texte": "Des techniques robustes pour un monde économe.",
+   "principal": {
+    "axe": 1,
+    "pole": 0
+   },
+   "secondaire": {
+    "axe": 0,
+    "pole": 0
+   }
+  },
+  {
+   "id": "V07",
+   "titre": "L’Aisance automatique",
+   "texte": "L’automatisation au service d’une vie matérielle facile.",
+   "principal": {
+    "axe": 1,
+    "pole": 1
+   },
+   "secondaire": {
+    "axe": 0,
+    "pole": 1
+   }
+  },
+  {
+   "id": "V08",
+   "titre": "Le Loisir commun",
+   "texte": "Les machines travaillent, la société se retrouve.",
+   "principal": {
+    "axe": 1,
+    "pole": 1
+   },
+   "secondaire": {
+    "axe": 3,
+    "pole": 1
+   }
+  },
+  {
+   "id": "V09",
+   "titre": "Les Ateliers de pays",
+   "texte": "Des territoires qui savent faire par eux-mêmes.",
+   "principal": {
+    "axe": 2,
+    "pole": 0
+   },
+   "secondaire": {
+    "axe": 1,
+    "pole": 0
+   }
+  },
+  {
+   "id": "V10",
+   "titre": "Les Villages souverains",
+   "texte": "De petites communautés où chacun mène sa barque.",
+   "principal": {
+    "axe": 2,
+    "pole": 0
+   },
+   "secondaire": {
+    "axe": 3,
+    "pole": 0
+   }
+  },
+  {
+   "id": "V11",
+   "titre": "Le Monde-réseau",
+   "texte": "Une planète tissée de flux et de machines.",
+   "principal": {
+    "axe": 2,
+    "pole": 1
+   },
+   "secondaire": {
+    "axe": 1,
+    "pole": 1
+   }
+  },
+  {
+   "id": "V12",
+   "titre": "La Grande Circulation",
+   "texte": "Biens, idées et personnes voyagent sans limite.",
+   "principal": {
+    "axe": 2,
+    "pole": 1
+   },
+   "secondaire": {
+    "axe": 0,
+    "pole": 1
+   }
+  },
+  {
+   "id": "V13",
+   "titre": "Les Nomades du monde",
+   "texte": "Des individus libres de leurs attaches, chez eux partout.",
+   "principal": {
+    "axe": 3,
+    "pole": 0
+   },
+   "secondaire": {
+    "axe": 2,
+    "pole": 1
+   }
+  },
+  {
+   "id": "V14",
+   "titre": "Les Indépendants",
+   "texte": "Chacun maître de ses outils et de son temps.",
+   "principal": {
+    "axe": 3,
+    "pole": 0
+   },
+   "secondaire": {
+    "axe": 1,
+    "pole": 0
+   }
+  },
+  {
+   "id": "V15",
+   "titre": "La Maison commune",
+   "texte": "Une société solidaire qui se contente de l’essentiel.",
+   "principal": {
+    "axe": 3,
+    "pole": 1
+   },
+   "secondaire": {
+    "axe": 0,
+    "pole": 0
+   }
+  },
+  {
+   "id": "V16",
+   "titre": "La République des voisins",
+   "texte": "L’entraide et la décision au coin de la rue.",
+   "principal": {
+    "axe": 3,
+    "pole": 1
+   },
+   "secondaire": {
+    "axe": 2,
+    "pole": 0
+   }
+  }
+ ],
+ "types": [
+  {
+   "id": "equilibre",
+   "axe": null,
+   "pole": null,
+   "nom": "La Société en équilibre",
+   "texte": "Aucune force n’a pris le dessus : 2075 ressemble à un compromis mouvant, où chaque orientation reste discutée."
+  },
+  {
+   "id": "sobriete",
+   "axe": 0,
+   "pole": 0,
+   "nom": "La Grande Tempérance",
+   "texte": "On vit de peu et on y tient : la mesure est devenue la valeur cardinale."
+  },
+  {
+   "id": "abondance",
+   "axe": 0,
+   "pole": 1,
+   "nom": "L’Âge d’abondance",
+   "texte": "Énergie et matières ne manquent plus : la question n’est plus de produire, mais de quoi faire de tant."
+  },
+  {
+   "id": "outil",
+   "axe": 1,
+   "pole": 0,
+   "nom": "Le Monde des ateliers",
+   "texte": "Les techniques sont simples, lisibles, réparables : on sait comment marche ce dont on dépend."
+  },
+  {
+   "id": "automate",
+   "axe": 1,
+   "pole": 1,
+   "nom": "La Cité automate",
+   "texte": "Les machines décident, produisent et soignent ; les humains supervisent, ou font autre chose."
+  },
+  {
+   "id": "local",
+   "axe": 2,
+   "pole": 0,
+   "nom": "L’Archipel des territoires",
+   "texte": "Le monde est une mosaïque de pays qui s’organisent chacun à sa façon."
+  },
+  {
+   "id": "global",
+   "axe": 2,
+   "pole": 1,
+   "nom": "Le Monde-réseau",
+   "texte": "Normes, flux et institutions sont planétaires : on habite d’abord la Terre."
+  },
+  {
+   "id": "autonomie",
+   "axe": 3,
+   "pole": 0,
+   "nom": "La Société des singuliers",
+   "texte": "Chacun compose sa vie à la carte ; les appartenances sont choisies et révocables."
+  },
+  {
+   "id": "commun",
+   "axe": 3,
+   "pole": 1,
+   "nom": "La République des communs",
+   "texte": "On possède, décide et prend soin ensemble : le collectif est l’échelle ordinaire de la vie."
+  }
+ ]
+}
