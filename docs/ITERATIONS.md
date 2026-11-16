@@ -27,3 +27,29 @@ Constats :
 - **Les axes s'emballent** : plus de 2 bascules par partie, presque tous les mondes finissent dans un coin ; le type « équilibre » n'existe pas.
 - **Aucun retour possible** à 4-5 joueurs (1 à 3,5 %).
 - L'expert ne bat pas le glouton (51 %) : la recherche n'apporte rien quand le meilleur coup est presque toujours « parier ».
+
+## Calibrage des bots (sans changement de règles)
+
+Avant de toucher aux règles, vérification que le diagnostic ne vient pas de bots mal réglés : recherche évolutionnaire sur les poids de l'évaluation
+(`npm run adverse -- --adopter 1`), deux passes, les meilleurs poids deviennent la référence « glouton » (`bots/src/poids.json`).
+Les archétypes (chasseur, parieur, bloqueur, spécialistes) sont définis comme des déformations de cette référence.
+Ce calibrage est refait après chaque changement de règles (`outils/iteration.sh`) : **on ne compare jamais des règles nouvelles avec des joueurs réglés pour les anciennes.**
+
+v0.1 avec bots calibrés : C1 ✘ 1,55 (chasseur, 5 j.) · C2 ✔ 2,5 · C3 ✔ 95 % / ✔ 64 % · C4 ✘ 1,2 % · C5 ✔ 5,0 · C6 ✔ 16 % · C8 ✔ 4,3.
+Le défaut est confirmé : anticipation = 17 points sur 25, 19 à 29 veilles par partie. C'est bien un problème de règles.
+
+## v0.2 — L'attention devient rare et disputée
+
+**Hypothèse.** Le jeu est un jeu de paris parce que l'attention ne coûte rien : 5 jetons qui reviennent vite, et tout le monde peut parier sur le même signal.
+Si l'attention est rare (3 jetons) et si chaque lecture d'un signal n'accepte qu'un seul pari (premier arrivé, premier servi), les paris redeviennent un choix et une course.
+
+**Changement.** `jetonsAttention` 5 → 3 ; `placesParLecture` = 1 (une place ▲ et une place ▼ par signal) ; `ptsRupture` 4 → 3.
+
+| | C1 | C2 | C3 | C4 | C5 | C6 | C8 | anticipation / score moyen (4 j.) |
+|--|----|----|----|----|----|----|----|----|
+| avant (v0.1 calibrée) | ✘ 1,55 | ✔ 2,5 | ✔ 95 % / ✔ 64 % | ✘ 1,2 % | ✔ 5,0 | ✔ 16 % | ✔ 4,3 | 17,4 / 25,7 |
+| après (v0.2) | ✘ 1,40 (glouton, 5 j.) | ✔ −2,5 | ✔ 92 % / ✘ 57 % | ✘ 1,7 % | ✔ 5,5 | ✔ 16 % | ✔ 4,2 | 8,6 / 18,6 |
+
+**Conclusion.** Hypothèse confirmée : l'anticipation passe de deux tiers à un peu moins de la moitié des points, on installe plus qu'on ne parie à 2 et 3 joueurs,
+le chasseur ne domine plus. Reste : glouton trop fort à 4-5 joueurs, toujours plus de 2 bascules par partie, et le dernier ne revient jamais à 4-5 joueurs
+(à 2 joueurs il gagne 25 % du temps, à 3 joueurs 10 %). L'expert repasse sous 60 % contre le glouton : à surveiller, pas à corriger par les règles pour l'instant.
