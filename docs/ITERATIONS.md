@@ -53,3 +53,22 @@ Si l'attention est rare (3 jetons) et si chaque lecture d'un signal n'accepte qu
 **Conclusion.** Hypothèse confirmée : l'anticipation passe de deux tiers à un peu moins de la moitié des points, on installe plus qu'on ne parie à 2 et 3 joueurs,
 le chasseur ne domine plus. Reste : glouton trop fort à 4-5 joueurs, toujours plus de 2 bascules par partie, et le dernier ne revient jamais à 4-5 joueurs
 (à 2 joueurs il gagne 25 % du temps, à 3 joueurs 10 %). L'expert repasse sous 60 % contre le glouton : à surveiller, pas à corriger par les règles pour l'instant.
+
+## v0.3 — Un pas par décennie, bascule avant le bout de piste
+
+**Hypothèse.** Les axes s'emballent parce qu'ils peuvent avancer de 2 cases par décennie : en trois bilans un axe est en bout de piste, la voie opposée se ferme,
+et le reste de la partie n'a plus d'enjeu sur cet axe. Avec un pas d'une seule case (« l'axe avance d'une case vers le côté le plus lourd », règle aussi plus simple à table)
+et une bascule à 4 cases du centre, les axes restent disputés plus longtemps.
+
+**Changement.** `pasMaxAxe` 2 → 1 ; `seuilBascule` = 4 (cases 1 et 9) au lieu du bout de piste.
+
+| | C1 | C2 | C3 | C4 | C5 | C6 | C8 | bascules / partie (4 j.) |
+|--|----|----|----|----|----|----|----|----|
+| avant (v0.2) | ✘ 1,40 | ✔ −2,5 | ✔ 92 % / ✘ 57 % | ✘ 1,7 % | ✔ 5,5 | ✔ 16 % | ✔ 4,2 | 2,5 |
+| après (v0.3) | ✘ 1,36 (glouton, 5 j.) | ✘ −3,6 (5 j.) | ✔ 91 % / ✘ 43 % | ✘ 1,5 % | ✔ 5,0 | ✔ 18 % | ✔ 4,3 | 2,0 |
+
+**Conclusion.** Hypothèse à moitié confirmée : un peu moins de bascules, règle plus simple, mais **le jeu s'est aplati** — l'expert tombe à 43 % contre le glouton
+(critère 3 dégradé) : quand chaque axe ne fait qu'avancer d'un pas vers le plus lourd, pousser « toujours plus » suffit et anticiper n'apporte rien.
+Le dernier ne revient toujours pas (un diagnostic dédié montre qu'à 5 joueurs, même entre bots identiques, l'écart moyen de 8,5 points en 2055 n'est jamais remonté :
+le meneur continue de gagner des points de vision par simple inertie). Leviers essayés sans effet sur C4 : barème de vision concave, ruptures plus nombreuses en fin de partie,
+bonus de cohérence sur l'héritage. Le pas d'une case est conservé pour sa lisibilité, mais il faut une autre voie pour redonner de la profondeur : voir v0.4.

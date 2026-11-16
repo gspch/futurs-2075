@@ -140,6 +140,29 @@
     "chocSignal": {
       "type": "integer",
       "minimum": 0
+    },
+    "baremePrincipal": {
+      "type": "array",
+      "items": {
+        "type": "number"
+      }
+    },
+    "baremeSecondaire": {
+      "type": "array",
+      "items": {
+        "type": "number"
+      }
+    },
+    "heritageBonus": {
+      "type": "number",
+      "minimum": 0
+    },
+    "rupturesParDecennie": {
+      "type": "array",
+      "items": {
+        "type": "integer",
+        "minimum": 0
+      }
     }
   }
 }

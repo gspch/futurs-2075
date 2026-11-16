@@ -124,15 +124,18 @@ export function scoreAttendu(m: Moteur, e: Etat, j: number, w: Poids, pas: numbe
     const vis = C.visions[joueur.vision];
     p1 = vis.principal.axe * 2 + vis.principal.pole; p2 = vis.secondaire.axe * 2 + vis.secondaire.pole;
   } else if (joueur.vision === -2) [p1, p2] = visionPresumee(e, j);
-  if (p1 >= 0) { const a = p1 >> 1; v += P.ptsVisionPrincipal * Math.max(0, ((p1 & 1) === 1 ? f[a] : P.pisteMax - f[a]) - centre); }
-  if (p2 >= 0) { const a = p2 >> 1; v += P.ptsVisionSecondaire * Math.max(0, ((p2 & 1) === 1 ? f[a] : P.pisteMax - f[a]) - centre); }
+  if (p1 >= 0) { const a = p1 >> 1; v += m.ptsVision(0, ((p1 & 1) === 1 ? f[a] : P.pisteMax - f[a]) - centre); }
+  if (p2 >= 0) { const a = p2 >> 1; v += m.ptsVision(1, ((p2 & 1) === 1 ? f[a] : P.pisteMax - f[a]) - centre); }
   let h = 0;
+  const hb = (P.heritageBonus as number) || 0;
+  const parAxe = [0, 0, 0, 0];
   for (const t of e.tendances) {
     if (t.proprio !== j) continue;
     const d = (t.pole === 1 ? 1 : -1) * (f[t.axe] - centre);
-    h += d >= 2 ? 0.95 : d <= -2 ? 0.05 : 0.5 + 0.225 * d;
+    const p = d >= 2 ? 0.95 : d <= -2 ? 0.05 : 0.5 + 0.225 * d;
+    h += p * P.ptsHeritage;
+    if (hb > 0) { if (parAxe[t.axe] > 0) h += p * hb; parAxe[t.axe]++; }
   }
-  h *= P.ptsHeritage;
   let ant = joueur.anticipation;
   for (const s of e.horizon) for (const p of s.paris) {
     if (p.j === j) ant += w.signal * probaPari(m, e, s, p.lecture, pas) * (p.precoce ? P.ptsSignalPrecoce : P.ptsSignalTardif);

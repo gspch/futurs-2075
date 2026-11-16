@@ -1,5 +1,5 @@
 {
-  "version": "0.2",
+  "version": "0.3",
   "decennies": 5,
   "actionsParDecennie": {
     "2": 4,
@@ -13,7 +13,7 @@
   "jetonsAttention": 3,
   "signauxParDecennie": 3,
   "pisteMax": 10,
-  "pasMaxAxe": 2,
+  "pasMaxAxe": 1,
   "coutInflechir": [
     1,
     2
@@ -28,5 +28,6 @@
   "ptsHeritage": 1,
   "rupturesLatentesMax": 2,
   "facesDe": 6,
-  "placesParLecture": 1
+  "placesParLecture": 1,
+  "seuilBascule": 4
 }

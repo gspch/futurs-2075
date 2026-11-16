@@ -65,6 +65,7 @@ export interface Moteur {
   lectureSignal(carte: number, lecture: number): Lecture | null;
   titreTendance(t: { id: number; lecture: number }): string;
   actionsParDecennie(n: number): number;
+  ptsVision(rang: number, d: number): number;
 }
 
 export function creerMoteur(contenu: Contenu, params: Parametres): Moteur {
@@ -76,6 +77,18 @@ export function creerMoteur(contenu: Contenu, params: Parametres): Moteur {
   const placesParLecture = typeof P.placesParLecture === 'number' ? (P.placesParLecture as number) : 0;
   const seuilBascule = typeof P.seuilBascule === 'number' ? (P.seuilBascule as number) : centre;
 
+  const baremes = [P.baremePrincipal as number[] | undefined, P.baremeSecondaire as number[] | undefined];
+  /** Points de vision pour une distance d (éventuellement fractionnaire) au-delà du centre vers le pôle voulu. rang 0 = principal, 1 = secondaire. */
+  function ptsVision(rang: number, d: number): number {
+    if (d <= 0) return 0;
+    const b = baremes[rang];
+    if (!b) return (rang === 0 ? P.ptsVisionPrincipal : P.ptsVisionSecondaire) * d;
+    const i = Math.min(Math.floor(d), b.length - 1);
+    const suivant = b[Math.min(i + 1, b.length - 1)];
+    return b[i] + (suivant - b[i]) * (d - i);
+  }
+  const rupturesParDecennie = P.rupturesParDecennie as number[] | undefined;
+  const heritageBonus = typeof P.heritageBonus === 'number' ? (P.heritageBonus as number) : 0;
   const actionsParDecennie = (n: number) => P.actionsParDecennie[String(n)];
   const penche = (e: Etat, axe: number, pole: number) => (pole === 1 ? e.axes[axe] > centre : e.axes[axe] < centre);
   const versPole = (v: number, pole: number) => (pole === 1 ? v : P.pisteMax - v);
@@ -99,7 +112,9 @@ export function creerMoteur(contenu: Contenu, params: Parametres): Moteur {
 
   function debutDecennie(e: Etat, journal?: Evenement[]): void {
     journal?.push({ t: 'decennie', d: e.decennie, premier: e.premier });
-    if (e.piocheR.length > 0 && e.ruptures.length < P.rupturesLatentesMax) {
+    const nr = rupturesParDecennie ? rupturesParDecennie[Math.min(e.decennie, rupturesParDecennie.length - 1)] : 1;
+    for (let k = 0; k < nr; k++) {
+      if (e.piocheR.length === 0 || e.ruptures.length >= P.rupturesLatentesMax) break;
       const carte = e.piocheR.pop() as number;
       e.ruptures.push({ carte, age: 0, prepares: [] });
       e.rupturesVues.push(carte);
@@ -447,11 +462,18 @@ export function creerMoteur(contenu: Contenu, params: Parametres): Moteur {
       let vision = 0;
       if (j.vision >= 0) {
         const v = C.visions[j.vision];
-        vision += P.ptsVisionPrincipal * Math.max(0, versPole(e.axes[v.principal.axe], v.principal.pole) - centre);
-        vision += P.ptsVisionSecondaire * Math.max(0, versPole(e.axes[v.secondaire.axe], v.secondaire.pole) - centre);
+        vision += ptsVision(0, versPole(e.axes[v.principal.axe], v.principal.pole) - centre);
+        vision += ptsVision(1, versPole(e.axes[v.secondaire.axe], v.secondaire.pole) - centre);
       }
       let heritage = 0;
-      for (const t of e.tendances) if (t.proprio === jc && penche(e, t.axe, t.pole)) heritage += P.ptsHeritage;
+      if (heritageBonus > 0) {
+        // cohérence : chaque tendance au-delà de la première sur un même axe vaut un bonus
+        for (let a = 0; a < NA; a++) {
+          let k = 0;
+          for (const t of e.tendances) if (t.axe === a && t.proprio === jc && penche(e, t.axe, t.pole)) k++;
+          if (k > 0) heritage += P.ptsHeritage * k + heritageBonus * (k - 1);
+        }
+      } else for (const t of e.tendances) if (t.proprio === jc && penche(e, t.axe, t.pole)) heritage += P.ptsHeritage;
       out.push({ vision, heritage, anticipation: j.anticipation, total: vision + heritage + j.anticipation });
     }
     return out;
@@ -534,5 +556,5 @@ export function creerMoteur(contenu: Contenu, params: Parametres): Moteur {
     return err;
   }
 
-  return { contenu: C, params: P, centre, creerPartie, coupsLegaux, jouer, jouerEnPlace, effet, installable, scores, gagnants, forceNette, projection, tension, typeSociete, observer, verifier, memeCoup, lectureSignal, titreTendance, actionsParDecennie };
+  return { contenu: C, params: P, centre, creerPartie, coupsLegaux, jouer, jouerEnPlace, effet, installable, scores, gagnants, forceNette, projection, tension, typeSociete, observer, verifier, memeCoup, lectureSignal, titreTendance, actionsParDecennie, ptsVision };
 }

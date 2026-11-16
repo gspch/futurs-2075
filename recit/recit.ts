@@ -144,3 +144,34 @@ export function portrait(C: Contenu, type: number, axes: number[], centre: numbe
 }
 
 export function decrireScore(s: Score): string { return `${s.total} points (vision ${s.vision}, héritage ${s.heritage}, anticipation ${s.anticipation})`; }
+
+// ---------- Texte de règle des cartes (généré depuis les données : identique sur le web et dans les PDF) ----------
+
+export function effetTendance(C: Contenu, i: number): string {
+  const t = C.tendances[i];
+  let s = `À chaque bilan, pousse ${C.axes[t.axe].nom} vers ${nomPole(C, t.axe, t.pole)} (force ${t.force}).`;
+  if (t.prerequis) s += ` Prérequis : ${C.axes[t.prerequis.axe].nom} penche déjà vers ${nomPole(C, t.prerequis.axe, t.prerequis.pole)}.`;
+  return s;
+}
+export function effetSignal(C: Contenu, i: number): { contexte: string; haut: string; bas: string } {
+  const s = C.signaux[i];
+  if (s.condition === null) return { contexte: 'Bruit', haut: 'Ce signal ne s’amplifie jamais.', bas: 'Tout pari sur lui est perdu.' };
+  const ax = C.axes[s.condition];
+  const lec = (l: typeof s.haut) => (l ? `« ${l.titre} » → ${ciblePole(C, l.axe, l.pole)}` : 's’éteint');
+  return { contexte: `Contexte : ${ax.nom}`, haut: `▲ si ${ax.nom} penche vers ${ax.poles[1]} : ${lec(s.haut)}`, bas: `▼ si ${ax.nom} penche vers ${ax.poles[0]} : ${lec(s.bas)}` };
+}
+export function effetRupture(C: Contenu, i: number): { terrain: string; effets: string[] } {
+  const r = C.ruptures[i];
+  const terrain = `Terrain : ${ciblePole(C, r.terrain.axe, r.terrain.pole)}. Tension = cases au-delà du centre vers ${nomPole(C, r.terrain.axe, r.terrain.pole)}${r.tensionMin > 0 ? ` (au minimum ${r.tensionMin})` : ''}.`;
+  const effets = r.effets.map((ef) => {
+    if (ef.type === 'deplacer') return `${C.axes[ef.axe].nom} recule de ${ef.n} case${ef.n > 1 ? 's' : ''} vers ${nomPole(C, ef.axe, ef.pole)}`;
+    if (ef.type === 'purger') return `défaussez ${ef.n > 1 ? `les ${ef.n} plus anciennes tendances` : 'la plus ancienne tendance'} ${nomPole(C, ef.axe, ef.pole)}, même verrouillée${ef.n > 1 ? 's' : ''}`;
+    return 'chacun défausse sa main et repioche autant de cartes';
+  });
+  return { terrain, effets };
+}
+export function effetVision(C: Contenu, i: number): { principal: string; secondaire: string } {
+  const v = C.visions[i] as unknown as { principal: { axe: number; pole: number; case?: number }; secondaire: { axe: number; pole: number; case?: number } };
+  const f = (x: { axe: number; pole: number; case?: number }) => (x.case === undefined ? ciblePole(C, x.axe, x.pole) : `${C.axes[x.axe].nom} en case ${x.case} (${nomPole(C, x.axe, x.pole)})`);
+  return { principal: f(v.principal), secondaire: f(v.secondaire) };
+}
